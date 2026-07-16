@@ -732,6 +732,14 @@
       "password": "1233214321",
       "confirmPassword": "1233214321",
       "id": 4
+    },
+    {
+      "name": "Admin",
+      "lastname": "User",
+      "email": "admin@admin.com",
+      "password": "admin123",
+      "role": "admin",
+      "id": 5
     }
   ],
   "nav-items": [
