@@ -34,7 +34,7 @@ php /var/www/html/artisan config:clear || true
 php /var/www/html/artisan route:clear || true
 
 # Run migrations on startup
-php /var/www/html/artisan migrate --force 2>/dev/null || true
+php /var/www/html/artisan migrate --force
 
 # Seed database if users table is empty
 php -r "
