@@ -14,7 +14,12 @@ type CartState = {
 const getCartFromLocalStorage = (): CartState | null => {
   try {
     const cart = localStorage.getItem("cart");
-    return cart ? JSON.parse(cart) : null;
+    if (!cart) return null;
+    const parsed = JSON.parse(cart);
+    if (parsed && Array.isArray(parsed.productsInCart)) {
+      return parsed;
+    }
+    return null;
   } catch {
     return null;
   }
