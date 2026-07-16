@@ -24,8 +24,9 @@ const Login = () => {
       const user = response.data;
       toast.success("You logged in successfully");
       localStorage.setItem("user", JSON.stringify(user));
-      if (user && user.token) {
-        localStorage.setItem("token", user.token);
+      const token = user.access_token || user.token;
+      if (token) {
+        localStorage.setItem("token", token);
       }
       store.dispatch(setLoginStatus(true));
       navigate("/user-profile");
