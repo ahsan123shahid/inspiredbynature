@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: inspiredbynature-backend
+    env: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    plan: free
+    envVars:
+      - key: APP_KEY
+        value: base64:egS+g2OC0U8NaEgM19xPl8+KEpytaxjyhH0dmA8x2Yo=
+      - key: DB_CONNECTION
+        value: sqlite
