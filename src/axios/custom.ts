@@ -19,4 +19,16 @@ customFetch.interceptors.request.use((config) => {
     return config;
 });
 
+customFetch.interceptors.response.use(
+    (response) => {
+        if (response.data && response.data.status === "success" && Object.prototype.hasOwnProperty.call(response.data, "data")) {
+            response.data = response.data.data;
+        }
+        return response;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
 export default customFetch;
