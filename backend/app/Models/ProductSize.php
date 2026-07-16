@@ -1,0 +1,12 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class ProductSize extends Model
+{
+    public $timestamps = false;
+    protected $guarded = [];
+    protected $primaryKey = 'size_id';
+}
