@@ -1,7 +1,11 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const dbPath = path.join(process.cwd(), "db.json");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const dbPath = path.join(__dirname, "..", "db.json");
 let db = null;
 
 function loadDb() {
@@ -12,16 +16,16 @@ function loadDb() {
   return db;
 }
 
-function send(res, status, body) {
+export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.setHeader("Content-Type", "application/json");
-  res.status(status).send(JSON.stringify(body));
-}
 
-module.exports = async (req, res) => {
-  if (req.method === "OPTIONS") return send(res, 204, {});
+  if (req.method === "OPTIONS") {
+    res.status(204).end();
+    return;
+  }
 
   const db = loadDb();
   const segments = (req.query.path || []).filter(Boolean);
@@ -29,30 +33,41 @@ module.exports = async (req, res) => {
   const id = segments[1];
 
   try {
-    // Write methods are unsupported in this static demo backend.
     if (req.method !== "GET") {
-      return send(res, 200, req.method === "DELETE" ? {} : (req.body || {}));
+      const body =
+        req.method === "DELETE" ? {} : req.body || {};
+      res.status(200).json(body);
+      return;
     }
 
-    if (!resource) return send(res, 200, db);
+    if (!resource) {
+      res.status(200).json(db);
+      return;
+    }
 
     let collection = db[resource];
     if (!Array.isArray(collection)) {
-      // Some resources may be nested objects; fall back to empty.
       collection = collection != null ? collection : [];
     }
 
     if (id != null) {
-      const item = (Array.isArray(collection) ? collection : [])
-        .find((x) => String(x.id) === String(id) || String(x.cat_id) === String(id) || String(x.subcat_id) === String(id) || String(x.cat_item_id) === String(id));
-      return send(res, item ? 200 : 404, item || {});
+      const item = (Array.isArray(collection) ? collection : []).find(
+        (x) =>
+          String(x.id) === String(id) ||
+          String(x.cat_id) === String(id) ||
+          String(x.subcat_id) === String(id) ||
+          String(x.cat_item_id) === String(id)
+      );
+      res.status(item ? 200 : 404).json(item || {});
+      return;
     }
 
-    // Support simple query params (?key=value) json-server style.
     const url = new URL(req.url, "http://localhost");
     const params = Object.fromEntries(url.searchParams.entries());
     let result = collection;
-    const queryKeys = Object.keys(params).filter((k) => k !== "_limit" && k !== "_sort" && k !== "_order");
+    const queryKeys = Object.keys(params).filter(
+      (k) => k !== "_limit" && k !== "_sort" && k !== "_order"
+    );
     if (queryKeys.length && Array.isArray(result)) {
       result = result.filter((item) =>
         queryKeys.every((k) => String(item[k]) === String(params[k]))
@@ -60,14 +75,16 @@ module.exports = async (req, res) => {
     }
     if (params._sort && Array.isArray(result)) {
       const dir = params._order === "desc" ? -1 : 1;
-      result = [...result].sort((a, b) => (a[params._sort] > b[params._sort] ? dir : -dir));
+      result = [...result].sort((a, b) =>
+        a[params._sort] > b[params._sort] ? dir : -dir
+      );
     }
     if (params._limit && Array.isArray(result)) {
       result = result.slice(0, Number(params._limit));
     }
 
-    return send(res, 200, result);
+    res.status(200).json(result);
   } catch (e) {
-    return send(res, 500, { error: "Server error" });
+    res.status(500).json({ error: "Server error" });
   }
-};
+}
