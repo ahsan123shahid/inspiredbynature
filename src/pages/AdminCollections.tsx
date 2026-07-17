@@ -121,12 +121,41 @@ const AdminCollections = () => {
     setLoading(true);
     setError("");
     try {
-      const [itemsRes, catRes] = await Promise.all([
+      const [itemsRes, catRes, storeRes] = await Promise.all([
         customFetch.get("/collections"),
         customFetch.get("/categories"),
+        customFetch.get("/stores"),
       ]);
       setItems(normalizeItems(itemsRes.data));
       setSubcategories(normalizeSubcategories(catRes.data));
+
+      // Auto-sync featured collection tabs to collections
+      const storeData = storeRes.data?.[0];
+      if (storeData?.theme_settings) {
+        try {
+          const theme = JSON.parse(storeData.theme_settings);
+          const tabs = theme.featured_collections?.tabs || [];
+          const existing = itemsRes.data || [];
+          for (const tab of tabs) {
+            if (!tab.label) continue;
+            const match = existing.find((c: any) => c.title === tab.label);
+            if (!match) {
+              try {
+                await customFetch.post("/collections", {
+                  title: tab.label,
+                  handle: tab.category || tab.label.toLowerCase().replace(/\s+/g, "-"),
+                  image: "",
+                });
+              } catch { /* skip */ }
+            }
+          }
+          // Re-fetch
+          if (tabs.length > 0) {
+            const res = await customFetch.get("/collections");
+            setItems(normalizeItems(res.data));
+          }
+        } catch { /* skip */ }
+      }
     } catch {
       setError("Failed to load collections. Make sure the backend is running.");
     } finally {
