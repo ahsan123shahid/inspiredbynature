@@ -446,6 +446,27 @@ const AdminThemeEditor = () => {
         theme_settings: JSON.stringify(settings),
       };
       await customFetch.post("/stores", payload);
+
+      // Sync featured collection tabs to collections table
+      try {
+        const tabs = settings.featured_collections.tabs;
+        if (tabs.length > 0) {
+          const existingRes = await customFetch.get("/collections");
+          const existing = existingRes.data || [];
+          for (const tab of tabs) {
+            const match = existing.find((c: any) => c.title === tab.label);
+            const data = { title: tab.label, handle: tab.category || tab.label.toLowerCase().replace(/\s+/g, "-") };
+            if (match) {
+              await customFetch.put(`/collections/${match.id}`, data);
+            } else {
+              await customFetch.post("/collections", data);
+            }
+          }
+        }
+      } catch {
+        // Silently fail - collections sync is secondary
+      }
+
       toast.success("Theme settings saved successfully!");
     } catch (e: any) {
       console.error("Save failed, writing to local backup", e);
