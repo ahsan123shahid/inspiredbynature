@@ -105,12 +105,14 @@ const Landing = () => {
                 <h3 className="text-display-hero text-white mb-6">
                   {activeSettings.promotional_section.left_title}
                 </h3>
-                <Link
-                  to={activeSettings.promotional_section.left_btn_link || "/shop"}
-                  className="bg-white text-ink text-button-label uppercase tracking-tracked font-semibold px-10 py-4 rounded-pill hover:bg-shade-20 transition-all duration-300"
-                >
-                  {activeSettings.promotional_section.left_btn_text}
-                </Link>
+                {activeSettings.promotional_section.left_btn_text && (
+                  <Link
+                    to={activeSettings.promotional_section.left_btn_link || "/shop"}
+                    className="inline-block border border-white text-white text-button-label uppercase tracking-tracked font-semibold px-10 py-4 rounded-pill hover:bg-white/10 transition-all duration-300"
+                  >
+                    {activeSettings.promotional_section.left_btn_text}
+                  </Link>
+                )}
               </div>
             </div>
             
@@ -131,12 +133,14 @@ const Landing = () => {
                 <h3 className="text-display-hero text-white mb-6">
                   {activeSettings.promotional_section.right_title}
                 </h3>
-                <Link
-                  to={activeSettings.promotional_section.right_btn_link || "/shop"}
-                  className="bg-white text-ink text-button-label uppercase tracking-tracked font-semibold px-10 py-4 rounded-pill hover:bg-shade-20 transition-all duration-300"
-                >
-                  {activeSettings.promotional_section.right_btn_text}
-                </Link>
+                {activeSettings.promotional_section.right_btn_text && (
+                  <Link
+                    to={activeSettings.promotional_section.right_btn_link || "/shop"}
+                    className="inline-block border border-white text-white text-button-label uppercase tracking-tracked font-semibold px-10 py-4 rounded-pill hover:bg-white/10 transition-all duration-300"
+                  >
+                    {activeSettings.promotional_section.right_btn_text}
+                  </Link>
+                )}
               </div>
             </div>
           </div>
