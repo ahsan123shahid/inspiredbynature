@@ -1,18 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ProductGrid from "./ProductGrid";
 import ProductGridWrapper from "./ProductGridWrapper";
 import { ThemeSettings } from "../pages/HomeLayout";
+import customFetch from "../axios/custom";
 
 interface HomeCollectionSectionProps {
   themeSettings: ThemeSettings;
 }
 
+interface CollectionTab {
+  label: string;
+  category: string;
+}
+
 const HomeCollectionSection = ({ themeSettings }: HomeCollectionSectionProps) => {
   const [activeTabIdx, setActiveTabIdx] = useState(0);
+  const [collectionTabs, setCollectionTabs] = useState<CollectionTab[]>([]);
+
+  useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        const res = await customFetch.get("/collections");
+        if (res.data && res.data.length > 0) {
+          setCollectionTabs(
+            res.data.map((c: any) => ({
+              label: c.title || "",
+              category: c.handle || "",
+            })).filter((t: CollectionTab) => t.label)
+          );
+        }
+      } catch {
+        // fallback to theme settings tabs
+      }
+    };
+    fetchCollections();
+  }, []);
 
   const title = themeSettings.featured_collections?.title || "Featured Collections";
-  const tabs = themeSettings.featured_collections?.tabs || [];
+  const tabs = collectionTabs.length > 0 ? collectionTabs : (themeSettings.featured_collections?.tabs || []);
 
   const activeTab = tabs[activeTabIdx];
   const activeCategory = activeTab?.category || "all";
