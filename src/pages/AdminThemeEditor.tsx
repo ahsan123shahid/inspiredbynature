@@ -324,15 +324,7 @@ const AdminThemeEditor = () => {
 
 
   useEffect(() => {
-    const runMigration = async () => {
-      try {
-        await customFetch.get("/db-migrate-custom");
-      } catch {
-      }
-    };
-
     const fetchData = async () => {
-      runMigration();
       try {
         const [storeRes, catRes] = await Promise.all([
           customFetch.get("/stores"),

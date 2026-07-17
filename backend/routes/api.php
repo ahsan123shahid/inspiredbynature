@@ -40,28 +40,6 @@ Route::post('/auth/login', [AuthController::class, 'login'])->middleware('thrott
 Route::post('/auth/register', [AuthController::class, 'register'])->middleware('throttle:auth');
 Route::post('/auth/refresh', [AuthController::class, 'refresh'])->middleware('throttle:auth');
 
-Route::get('/debug-db', function() {
-    try {
-        $tables = [];
-        $db = config('database.default');
-        if ($db === 'sqlite') {
-            $tables = \Illuminate\Support\Facades\DB::select("SELECT name FROM sqlite_master WHERE type='table'");
-        } else {
-            $tables = \Illuminate\Support\Facades\DB::select("SELECT table_name FROM information_schema.tables WHERE table_schema='public'");
-        }
-        
-        $migrations = \Illuminate\Support\Facades\DB::table('migrations')->get();
-        
-        return response()->json([
-            'database' => $db,
-            'tables' => $tables,
-            'migrations' => $migrations,
-        ]);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-    }
-});
-
 // All other API routes are protected by throttle:api rate limiter
 Route::middleware('throttle:api')->group(function () {
 
