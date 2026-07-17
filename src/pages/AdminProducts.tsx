@@ -254,7 +254,7 @@ const AdminProducts = () => {
                           src={`/assets/${product.image}`} 
                           alt={product.title}
                           className="w-10 h-12 object-cover rounded border border-[#e4e4e7]"
-                          onError={(e) => { (e.target as HTMLImageElement).src = "/assets/product image 1.jpg"; }}
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                         />
                       </td>
                       <td className="py-3 pr-5 font-bold text-[#000000]">{product.title}</td>

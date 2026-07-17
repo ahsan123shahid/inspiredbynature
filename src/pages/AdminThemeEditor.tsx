@@ -804,7 +804,7 @@ const AdminThemeEditor = () => {
                               src={slide.image.startsWith("http") || slide.image.startsWith("/") ? slide.image : `/assets/${slide.image}`}
                               className="w-full h-full object-cover"
                               onError={(e) => {
-                                (e.target as HTMLImageElement).src = "/assets/banner1.jpg";
+                                (e.target as HTMLImageElement).style.display = "none";
                               }}
                             />
                           </div>
@@ -1487,7 +1487,7 @@ const AdminThemeEditor = () => {
                             src={item.url}
                             alt={item.name}
                             className="w-full h-full object-cover"
-                            onError={(e) => { (e.target as HTMLImageElement).src = "/assets/product image 1.jpg"; }}
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                           />
                           {isSelected && (
                             <div className="absolute top-2 right-2 bg-[#2c6ecb] text-white rounded-full p-1 shadow-md">

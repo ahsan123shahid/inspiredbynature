@@ -99,12 +99,12 @@
       "theme_settings": {
         "hero_slides": [
           {
-            "image": "hero-1.jpg",
+            "image": "",
             "title": "Scents Inspired By Nature",
             "subtitle": "Discover our latest fragrance collection"
           },
           {
-            "image": "hero-2.jpg",
+            "image": "",
             "title": "Elegance In Every Drop",
             "subtitle": "Handcrafted with love"
           }
@@ -132,14 +132,14 @@
       "UnitSystem": "metric",
       "WeightUnit": "kg",
       "Currency": "PKR",
-      "theme_settings": "{\"announcement\":{\"text\":\"Free Shipping Nationwide — For Queries: 0301 5158089\",\"bg_color\":\"#000000\",\"text_color\":\"#ffffff\",\"enabled\":false},\"logo_text\":\"INSPIREDBYNATURE\",\"slides\":[{\"id\":\"1\",\"title\":\"BLOOM 2026\",\"subtitle\":\"FLORAL & FRESH\",\"image\":\"banner1.jpg\",\"btn_text\":\"LIVE NOW\",\"btn_link\":\"/shop/luxury-collection\"},{\"id\":\"2\",\"title\":\"WOODS II 2026\",\"subtitle\":\"NEW ARRIVALS\",\"image\":\"banner.jpg\",\"btn_text\":\"SHOP NOW\",\"btn_link\":\"/shop/unstitched\"}],\"categories_section\":{\"enabled\":true,\"title\":\"Shop By Category\"},\"featured_collections\":{\"enabled\":true,\"title\":\"Featured Collections\",\"tabs\":[{\"label\":\"BLOOM 2026\",\"category\":\"special-edition\"},{\"label\":\"WOODS II 2026\",\"category\":\"luxury-collection\"},{\"label\":\"AQUA 2026\",\"category\":\"summer-edition\"},{\"label\":\"NOIR 2026\",\"category\":\"unique-collection\"}]},\"trending_products\":{\"enabled\":true,\"title\":\"Top Trending Fragrances\",\"limit\":5},\"whatsapp\":{\"phone\":\"+923173179230\",\"enabled\":true,\"message\":\"Hi, I would like to make an inquiry.\",\"position\":\"bottom-right\"},\"installments\":{\"enabled\":true,\"provider\":\"baadmay\",\"count\":3},\"promotional_section\":{\"enabled\":true,\"left_image\":\"luxury fashion 7 1.png\",\"left_subtitle\":\"New Season\",\"left_title\":\"New Arrivals\",\"left_btn_text\":\"Discover Now\",\"left_btn_link\":\"/shop/new-arrivals\",\"right_image\":\"luxury fashion 7 2.png\",\"right_subtitle\":\"Signature Fragrance\",\"right_title\":\"Luxury Perfume\",\"right_btn_text\":\"Explore Collection\",\"right_btn_link\":\"/shop/bridals\"}}"
+      "theme_settings": "{\"announcement\":{\"text\":\"Free Shipping Nationwide — For Queries: 0301 5158089\",\"bg_color\":\"#000000\",\"text_color\":\"#ffffff\",\"enabled\":false},\"logo_text\":\"INSPIREDBYNATURE\",\"slides\":[{\"id\":\"1\",\"title\":\"BLOOM 2026\",\"subtitle\":\"FLORAL & FRESH\",\"image\":\"\",\"btn_text\":\"LIVE NOW\",\"btn_link\":\"/shop/luxury-collection\"},{\"id\":\"2\",\"title\":\"WOODS II 2026\",\"subtitle\":\"NEW ARRIVALS\",\"image\":\"\",\"btn_text\":\"SHOP NOW\",\"btn_link\":\"/shop/unstitched\"}],\"categories_section\":{\"enabled\":true,\"title\":\"Shop By Category\"},\"featured_collections\":{\"enabled\":true,\"title\":\"Featured Collections\",\"tabs\":[{\"label\":\"BLOOM 2026\",\"category\":\"special-edition\"},{\"label\":\"WOODS II 2026\",\"category\":\"luxury-collection\"},{\"label\":\"AQUA 2026\",\"category\":\"summer-edition\"},{\"label\":\"NOIR 2026\",\"category\":\"unique-collection\"}]},\"trending_products\":{\"enabled\":true,\"title\":\"Top Trending Fragrances\",\"limit\":5},\"whatsapp\":{\"phone\":\"+923173179230\",\"enabled\":true,\"message\":\"Hi, I would like to make an inquiry.\",\"position\":\"bottom-right\"},\"installments\":{\"enabled\":true,\"provider\":\"baadmay\",\"count\":3},\"promotional_section\":{\"enabled\":true,\"left_image\":\"\",\"left_subtitle\":\"New Season\",\"left_title\":\"New Arrivals\",\"left_btn_text\":\"Discover Now\",\"left_btn_link\":\"/shop/new-arrivals\",\"right_image\":\"\",\"right_subtitle\":\"Signature Fragrance\",\"right_title\":\"Luxury Perfume\",\"right_btn_text\":\"Explore Collection\",\"right_btn_link\":\"/shop/bridals\"}}"
     }
   ],
   "products": [
     {
       "id": "1",
       "title": "Bloom Eau de Parfum",
-      "image": "product image 1.jpg",
+      "image": "",
       "category": "special-edition",
       "price": 3500,
       "popularity": 5,
@@ -148,7 +148,7 @@
     {
       "id": "2",
       "title": "Midnight Oud",
-      "image": "product image 2.jpg",
+      "image": "",
       "category": "luxury-collection",
       "price": 1050,
       "popularity": 4,
@@ -157,7 +157,7 @@
     {
       "id": "3",
       "title": "Azure Breeze",
-      "image": "product image 3.jpg",
+      "image": "",
       "category": "summer-edition",
       "price": 5000,
       "popularity": 3,
@@ -166,7 +166,7 @@
     {
       "id": "4",
       "title": "Velvet Rose",
-      "image": "product image 4.jpg",
+      "image": "",
       "category": "unique-collection",
       "price": 2500,
       "popularity": 2,
@@ -175,7 +175,7 @@
     {
       "id": "5",
       "title": "Golden Amber",
-      "image": "product image 5.jpg",
+      "image": "",
       "category": "unique-collection",
       "price": 5200,
       "popularity": 1,
@@ -184,7 +184,7 @@
     {
       "id": "6",
       "title": "Imperial Noir",
-      "image": "product image 6.jpg",
+      "image": "",
       "category": "luxury-collection",
       "price": 8500,
       "popularity": 20,
@@ -193,7 +193,7 @@
     {
       "id": "7",
       "title": "Wild Jasmine",
-      "image": "product image 7.jpg",
+      "image": "",
       "category": "luxury-collection",
       "price": 4500,
       "popularity": 5,
@@ -202,7 +202,7 @@
     {
       "id": "8",
       "title": "Santal Wood",
-      "image": "product image 8.jpg",
+      "image": "",
       "category": "unique-collection",
       "price": 4500,
       "popularity": 5,
@@ -211,7 +211,7 @@
     {
       "id": "9",
       "title": "White Musk",
-      "image": "product image 9.jpg",
+      "image": "",
       "category": "luxury-collection",
       "price": 4500,
       "popularity": 5,
@@ -220,7 +220,7 @@
     {
       "id": "10",
       "title": "Citrus Dawn",
-      "image": "product image 10.jpg",
+      "image": "",
       "category": "unique-collection",
       "price": 4500,
       "popularity": 5,
@@ -229,7 +229,7 @@
     {
       "id": "11",
       "title": "Golden Vanilla",
-      "image": "product image 11.jpg",
+      "image": "",
       "category": "luxury-collection",
       "price": 4500,
       "popularity": 5,
@@ -238,7 +238,7 @@
     {
       "id": "12",
       "title": "Ocean Mist",
-      "image": "product image 12.jpg",
+      "image": "",
       "category": "summer-edition",
       "price": 4500,
       "popularity": 5,
@@ -247,7 +247,7 @@
     {
       "id": "13",
       "title": "Pure Lily",
-      "image": "product image 13.jpg",
+      "image": "",
       "category": "special-edition",
       "price": 4500,
       "popularity": 5,
@@ -256,7 +256,7 @@
     {
       "id": "14",
       "title": "Amber Oud",
-      "image": "product image 14.jpg",
+      "image": "",
       "category": "special-edition",
       "price": 4500,
       "popularity": 5,
@@ -265,7 +265,7 @@
     {
       "id": "15",
       "title": "Rose Petal",
-      "image": "product image 15.jpg",
+      "image": "",
       "category": "special-edition",
       "price": 4500,
       "popularity": 5,
@@ -274,7 +274,7 @@
     {
       "id": "16",
       "title": "Crystal Bloom",
-      "image": "product image 16.jpg",
+      "image": "",
       "category": "special-edition",
       "price": 4500,
       "popularity": 5,
@@ -283,7 +283,7 @@
     {
       "id": "17",
       "title": "Dark Orchid",
-      "image": "product image 17.jpg",
+      "image": "",
       "category": "special-edition",
       "price": 4500,
       "popularity": 5,
@@ -292,7 +292,7 @@
     {
       "id": "18",
       "title": "Royal Saffron",
-      "image": "product image 18.jpg",
+      "image": "",
       "category": "unique-collection",
       "price": 4500,
       "popularity": 5,
@@ -322,7 +322,7 @@
       "products": [
         {
           "id": "2xsblack",
-          "image": "product image 2.jpg",
+          "image": "",
           "title": "Midnight Oud",
           "category": "luxury-collection",
           "price": 1050,
@@ -362,7 +362,7 @@
       "products": [
         {
           "id": "2xlblack",
-          "image": "product image 2.jpg",
+          "image": "",
           "title": "Midnight Oud",
           "category": "luxury-collection",
           "price": 1050,
@@ -402,7 +402,7 @@
       "products": [
         {
           "id": "1xlblack",
-          "image": "product image 1.jpg",
+          "image": "",
           "title": "Bloom Eau de Parfum",
           "category": "special-edition",
           "price": 3500,
@@ -414,7 +414,7 @@
         },
         {
           "id": "4xlblack",
-          "image": "product image 4.jpg",
+          "image": "",
           "title": "Velvet Rose",
           "category": "unique-collection",
           "price": 2500,
@@ -456,7 +456,7 @@
       "products": [
         {
           "id": "1xlblack",
-          "image": "product image 1.jpg",
+          "image": "",
           "title": "Bloom Eau de Parfum",
           "category": "special-edition",
           "price": 3500,
@@ -498,7 +498,7 @@
       "products": [
         {
           "id": "6xlblack",
-          "image": "product image 6.jpg",
+          "image": "",
           "title": "Imperial Noir",
           "category": "luxury-collection",
           "price": 8500,
@@ -510,7 +510,7 @@
         },
         {
           "id": "5xlblack",
-          "image": "product image 5.jpg",
+          "image": "",
           "title": "Golden Amber",
           "category": "unique-collection",
           "price": 5200,
@@ -522,7 +522,7 @@
         },
         {
           "id": "4xlblack",
-          "image": "product image 4.jpg",
+          "image": "",
           "title": "Velvet Rose",
           "category": "unique-collection",
           "price": 2500,
@@ -534,7 +534,7 @@
         },
         {
           "id": "3xlblack",
-          "image": "product image 3.jpg",
+          "image": "",
           "title": "Azure Breeze",
           "category": "summer-edition",
           "price": 5000,
@@ -546,7 +546,7 @@
         },
         {
           "id": "2xlblack",
-          "image": "product image 2.jpg",
+          "image": "",
           "title": "Midnight Oud",
           "category": "luxury-collection",
           "price": 1050,
@@ -558,7 +558,7 @@
         },
         {
           "id": "1xlblack",
-          "image": "product image 1.jpg",
+          "image": "",
           "title": "Bloom Eau de Parfum",
           "category": "special-edition",
           "price": 3500,
@@ -600,7 +600,7 @@
       "products": [
         {
           "id": "2xlblack",
-          "image": "product image 2.jpg",
+          "image": "",
           "title": "Midnight Oud",
           "category": "luxury-collection",
           "price": 1050,
@@ -638,7 +638,7 @@
       "products": [
         {
           "id": "2xlblack",
-          "image": "product image 2.jpg",
+          "image": "",
           "title": "Midnight Oud",
           "category": "luxury-collection",
           "price": 1050,
@@ -680,7 +680,7 @@
       "products": [
         {
           "id": "2smblue",
-          "image": "product image 2.jpg",
+          "image": "",
           "title": "Midnight Oud",
           "category": "luxury-collection",
           "price": 1050,

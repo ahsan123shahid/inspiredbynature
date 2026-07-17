@@ -64,7 +64,7 @@ const AboutUs = () => {
               alt="INSPIREDBYNATURE craftsmanship"
               className="w-full h-full object-cover"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = "/assets/banner1.jpg";
+                (e.target as HTMLImageElement).style.display = "none";
               }}
             />
           </motion.div>

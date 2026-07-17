@@ -362,7 +362,7 @@ const AdminAddProduct = () => {
                 {uploadedImage ? (
                   <>
                     <img src={uploadedImage.startsWith("http") ? uploadedImage : `/assets/${uploadedImage}`} alt="Uploaded Cover" className="max-h-36 rounded shadow-sm transition-transform duration-300 group-hover:scale-95"
-                      onError={(e) => { (e.target as HTMLImageElement).src = "/assets/product image 1.jpg"; }}
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                     />
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                       <span className="text-white text-xs font-semibold px-3 py-1.5 bg-black/60 rounded-md border border-white/20">Change Cover</span>
@@ -408,7 +408,7 @@ const AdminAddProduct = () => {
                     {img ? (
                       <>
                         <img src={img.startsWith("http") ? img : `/assets/${img}`} alt={`Gallery ${idx + 2}`} className="w-full h-full object-cover"
-                          onError={(e) => { (e.target as HTMLImageElement).src = "/assets/product image 1.jpg"; }}
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                         />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                           <button
@@ -693,7 +693,7 @@ const AdminAddProduct = () => {
                             src={item.url}
                             alt={item.name}
                             className="w-full h-full object-cover"
-                            onError={(e) => { (e.target as HTMLImageElement).src = "/assets/product image 1.jpg"; }}
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                           />
                           {isSelected && (
                             <div className="absolute top-2 right-2 bg-[#2c6ecb] text-white rounded-full p-1 shadow-md">

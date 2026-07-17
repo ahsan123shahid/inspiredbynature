@@ -97,7 +97,7 @@ const Banner = ({ themeSettings }: BannerProps) => {
                 alt=""
                 onLoad={() => onImageLoad(imageUrl)}
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = "/assets/banner1.jpg";
+                  (e.target as HTMLImageElement).style.display = "none";
                   onImageLoad(imageUrl);
                 }}
                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${

@@ -444,7 +444,7 @@ const HomeLayout = () => {
                 src={`/assets/${item.image}`}
                 alt=""
                 className="w-full h-full object-cover"
-                onError={(e) => { (e.target as HTMLImageElement).src = "/assets/product image 1.jpg"; }}
+                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
               />
             </motion.div>
           );

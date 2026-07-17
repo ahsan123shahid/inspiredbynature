@@ -90,11 +90,11 @@ const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 min-h-[500px]">
             <div className="relative flex flex-col justify-end items-start p-10 md:p-16 overflow-hidden bg-canvas-cream group">
               <img
-                src={activeSettings.promotional_section.left_image ? `/assets/${activeSettings.promotional_section.left_image}` : "/assets/perfume 1.png"}
+                src={activeSettings.promotional_section.left_image ? `/assets/${activeSettings.promotional_section.left_image}` : ""}
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-[10000ms] group-hover:scale-105"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = "/assets/perfume 1.png";
+                  (e.target as HTMLImageElement).style.display = "none";
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
@@ -116,11 +116,11 @@ const Landing = () => {
             
             <div className="relative flex flex-col justify-end items-start p-10 md:p-16 overflow-hidden bg-canvas-cream group border-t md:border-t-0 md:border-l border-hairline">
               <img
-                src={activeSettings.promotional_section.right_image ? `/assets/${activeSettings.promotional_section.right_image}` : "/assets/perfume 2.png"}
+                src={activeSettings.promotional_section.right_image ? `/assets/${activeSettings.promotional_section.right_image}` : ""}
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-[10000ms] group-hover:scale-105"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = "/assets/perfume 2.png";
+                  (e.target as HTMLImageElement).style.display = "none";
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
@@ -178,7 +178,7 @@ const Landing = () => {
                           alt={product.title}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).src = "/assets/product image 1.jpg";
+                            (e.target as HTMLImageElement).style.display = "none";
                           }}
                         />
                       </div>
@@ -224,11 +224,11 @@ const Landing = () => {
             {activeSettings.instagram_gallery.items.map((item, idx) => (
               <div key={idx} className="relative group overflow-hidden aspect-[3/4] rounded-md bg-canvas-cream">
                 <img
-                  src={item.image ? `/assets/${item.image}` : "/assets/product image 1.jpg"}
+                  src={item.image ? `/assets/${item.image}` : ""}
                   alt="Editorial Look"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = "/assets/product image 1.jpg";
+                    (e.target as HTMLImageElement).style.display = "none";
                   }}
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/45 transition-all duration-300 flex items-center justify-center">

@@ -229,7 +229,7 @@ const AdminDashboard = () => {
                       src={`/assets/${p.image}`}
                       alt={p.title}
                       className="w-10 h-12 object-cover rounded border border-[#e4e4e7]"
-                      onError={(e) => { (e.target as HTMLImageElement).src = "/assets/product image 1.jpg"; }}
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between text-xs font-semibold text-[#000000] mb-1">
@@ -325,7 +325,7 @@ const AdminDashboard = () => {
                       src={`/assets/${p.image}`}
                       alt={p.title}
                       className="w-8 h-10 object-cover rounded border border-[#e4e4e7]"
-                      onError={(e) => { (e.target as HTMLImageElement).src = "/assets/product image 1.jpg"; }}
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                     />
                     <div>
                       <h4 className="text-xs font-semibold text-[#000000] truncate max-w-[120px]">{p.title}</h4>

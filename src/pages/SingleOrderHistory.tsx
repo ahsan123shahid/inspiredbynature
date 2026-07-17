@@ -136,10 +136,10 @@ const SingleOrderHistory = () => {
               {singleOrder.products?.map((product: any, idx: number) => (
                 <div key={product.id || idx} className="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
                   <img
-                    src={product.image ? `/assets/${product.image}` : "/assets/product image 1.jpg"}
+                    src={product.image ? `/assets/${product.image}` : ""}
                     alt={product.title}
                     className="w-16 h-20 object-cover rounded border border-hairline flex-shrink-0"
-                    onError={(e) => { (e.target as HTMLImageElement).src = "/assets/product image 1.jpg"; }}
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-body-md font-medium text-ink truncate">{product.title}</p>

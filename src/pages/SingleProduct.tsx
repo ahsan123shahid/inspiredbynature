@@ -291,10 +291,10 @@ const SingleProduct = () => {
                 }`}
               >
                 <img
-                  src={img ? `/assets/${img}` : "/assets/product image 1.jpg"}
+                  src={img ? `/assets/${img}` : ""}
                   alt="Thumbnail"
                   className="w-full h-full object-cover"
-                  onError={(e) => { (e.target as HTMLImageElement).src = "/assets/product image 1.jpg"; }}
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                 />
               </button>
             ))}
@@ -333,14 +333,14 @@ const SingleProduct = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                src={activeImage ? `/assets/${activeImage}` : "/assets/product image 1.jpg"}
+                src={activeImage ? `/assets/${activeImage}` : ""}
                 alt={singleProduct?.title}
                 className="w-full h-full object-cover transition-transform duration-100"
                 style={{
                   transform: isZoomed ? "scale(1.8)" : "scale(1)",
                   transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
                 }}
-                onError={(e) => { (e.target as HTMLImageElement).src = "/assets/product image 1.jpg"; }}
+                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
               />
             </AnimatePresence>
           </div>
