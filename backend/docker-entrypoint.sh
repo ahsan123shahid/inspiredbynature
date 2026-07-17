@@ -65,9 +65,9 @@ rm -f /etc/apache2/mods-enabled/mpm_event.conf
 rm -f /etc/apache2/mods-enabled/mpm_worker.load
 rm -f /etc/apache2/mods-enabled/mpm_worker.conf
 
-# Ensure storage, cache, and database folders have proper write permissions for Apache (www-data)
-chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database || true
-chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database || true
+# Ensure storage, cache, database, and uploads folders have proper write permissions for Apache (www-data)
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database /var/www/html/public/assets/uploads || true
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database /var/www/html/public/assets/uploads || true
 
 # Start Apache
 apache2-foreground

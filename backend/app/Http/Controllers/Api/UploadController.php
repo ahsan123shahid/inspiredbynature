@@ -18,22 +18,15 @@ class UploadController extends Controller
         $extension = $file->getClientOriginalExtension();
         $filename = Str::uuid() . '.' . $extension;
         
-        $backendPath = public_path('assets');
-        $file->move($backendPath, $filename);
-
-        // Also save to frontend's public/assets directory if it exists and is writable
-        $frontendPath = base_path('../public/assets');
-        if (is_dir($frontendPath)) {
-            $sourceFile = $backendPath . '/' . $filename;
-            $destFile = $frontendPath . '/' . $filename;
-            if (file_exists($sourceFile) && is_writable($frontendPath)) {
-                @copy($sourceFile, $destFile);
-            }
+        $uploadDir = public_path('assets/uploads');
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0775, true);
         }
+        $file->move($uploadDir, $filename);
 
         return response()->json([
-            'filename' => $filename,
-            'url' => '/assets/' . $filename,
+            'filename' => 'uploads/' . $filename,
+            'url' => '/assets/uploads/' . $filename,
         ]);
     }
 }

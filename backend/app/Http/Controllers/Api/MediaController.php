@@ -10,24 +10,13 @@ class MediaController extends Controller
 {
     public function index()
     {
-        $backendPath = public_path('assets');
         $media = [];
 
-        if (is_dir($backendPath)) {
-            $files = File::files($backendPath);
-            foreach ($files as $file) {
-                $extension = strtolower($file->getExtension());
-                if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'])) {
-                    $media[] = [
-                        'id' => md5($file->getFilename()),
-                        'name' => $file->getFilename(),
-                        'url' => '/assets/' . $file->getFilename(),
-                        'size' => $this->formatBytes($file->getSize()),
-                        'time' => $file->getMTime(),
-                    ];
-                }
-            }
-        }
+        // Read default assets from root (non-uploads)
+        $this->scanDir(public_path('assets'), '', $media);
+
+        // Read user-uploaded assets from uploads/ subdirectory
+        $this->scanDir(public_path('assets/uploads'), 'uploads/', $media);
 
         // Sort by time descending (newest first)
         usort($media, function ($a, $b) {
@@ -37,36 +26,41 @@ class MediaController extends Controller
         return response()->json($media);
     }
 
+    private function scanDir($dir, $prefix, &$media)
+    {
+        if (!is_dir($dir)) return;
+        $files = File::files($dir);
+        foreach ($files as $file) {
+            $extension = strtolower($file->getExtension());
+            if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'])) {
+                $media[] = [
+                    'id' => md5($prefix . $file->getFilename()),
+                    'name' => $prefix . $file->getFilename(),
+                    'url' => '/assets/' . $prefix . $file->getFilename(),
+                    'size' => $this->formatBytes($file->getSize()),
+                    'time' => $file->getMTime(),
+                ];
+            }
+        }
+    }
+
     public function destroy($filename)
     {
-        // Sanitize filename to prevent path traversal
-        $filename = basename($filename);
-        if (!preg_match('/^[a-zA-Z0-9._-]+$/', $filename)) {
-            return response()->json(['message' => 'Invalid filename.'], 400);
-        }
-
-        // Prevent deletion of base system assets
-        $systemAssets = ['banner.jpg', 'banner1.jpg', 'luxury fashion 7 1.png', 'luxury fashion 7 2.png', '1.jpg'];
-        if (in_array($filename, $systemAssets) || str_starts_with($filename, 'product image')) {
+        // Only allow deleting files from the uploads/ subdirectory
+        if (!str_starts_with($filename, 'uploads/')) {
             return response()->json(['message' => 'System assets cannot be deleted.'], 403);
         }
 
-        $backendFile = public_path('assets/' . $filename);
-        $frontendFile = base_path('../public/assets/' . $filename);
+        // Sanitize: keep uploads/ prefix but strip any path traversal
+        $relativePath = 'uploads/' . basename(substr($filename, 8));
+        if (!preg_match('/^uploads\/[a-zA-Z0-9._-]+$/', $relativePath)) {
+            return response()->json(['message' => 'Invalid filename.'], 400);
+        }
 
-        $deleted = false;
+        $backendFile = public_path('assets/' . $relativePath);
 
         if (File::exists($backendFile)) {
             File::delete($backendFile);
-            $deleted = true;
-        }
-
-        if (File::exists($frontendFile)) {
-            File::delete($frontendFile);
-            $deleted = true;
-        }
-
-        if ($deleted) {
             return response()->json(['status' => 'success', 'message' => 'File deleted successfully.']);
         }
 

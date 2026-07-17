@@ -48,9 +48,12 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 # Create SQLite database if not exists
 RUN mkdir -p database && touch database/database.sqlite
 
+# Create uploads directory for Railway persistent volume
+RUN mkdir -p public/assets/uploads
+
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 storage bootstrap/cache database
+    && chmod -R 775 storage bootstrap/cache database public/assets
 
 # Generate app key if not set, run migrations, cache config
 RUN php artisan key:generate --force || true
