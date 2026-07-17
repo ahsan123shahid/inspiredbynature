@@ -566,10 +566,10 @@ Route::middleware('throttle:api')->group(function () {
 
                     \Illuminate\Support\Facades\DB::table('apps')->insert([
                         [
-                            'name' => 'Zarka Inbox',
+                            'name' => 'Inspired By Nature Inbox',
                             'category' => 'Customer Service',
                             'description' => 'Real-time customer chat and support messages.',
-                            'developer' => 'Zarka Couture',
+                            'developer' => 'Inspired By Nature',
                             'logo' => '',
                             'link' => '',
                             'created_at' => now(),

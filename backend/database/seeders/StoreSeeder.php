@@ -13,7 +13,8 @@ class StoreSeeder extends Seeder
             $store = Store::first();
             $settings = [
                 "announcement" => ["text" => "Free Shipping Nationwide — For Queries: 0301 5158089", "bg_color" => "#000000", "text_color" => "#ffffff", "enabled" => false],
-                "logo_text" => "ZARKA COUTURE",
+                "logo_text" => "INSPIREDBYNATURE",
+                "logo_image" => "inspired-by-nature-logo.png",
                 "slides" => [
                     ["id" => "1", "title" => "SATORI 2026", "subtitle" => "STILLNESS & LUXURY", "image" => "banner1.jpg", "btn_text" => "LIVE NOW", "btn_link" => "/shop/luxury-collection"],
                     ["id" => "2", "title" => "FESTIVE EID II 2026", "subtitle" => "NEW ARRIVALS", "image" => "banner.jpg", "btn_text" => "SHOP NOW", "btn_link" => "/shop/unstitched"],
@@ -37,7 +38,8 @@ class StoreSeeder extends Seeder
 
         $settings = [
             "announcement" => ["text" => "Free Shipping Nationwide — For Queries: 0301 5158089", "bg_color" => "#000000", "text_color" => "#ffffff", "enabled" => false],
-            "logo_text" => "ZARKA COUTURE",
+            "logo_text" => "INSPIREDBYNATURE",
+            "logo_image" => "inspired-by-nature-logo.png",
             "slides" => [
                 ["id" => "1", "title" => "SATORI 2026", "subtitle" => "STILLNESS & LUXURY", "image" => "banner1.jpg", "btn_text" => "LIVE NOW", "btn_link" => "/shop/luxury-collection"],
                 ["id" => "2", "title" => "FESTIVE EID II 2026", "subtitle" => "NEW ARRIVALS", "image" => "banner.jpg", "btn_text" => "SHOP NOW", "btn_link" => "/shop/unstitched"],
@@ -55,8 +57,8 @@ class StoreSeeder extends Seeder
             "promotional_section" => ["enabled" => true, "left_image" => "luxury fashion 7 1.png", "left_subtitle" => "New Season", "left_title" => "New Arrivals", "left_btn_text" => "Discover Now", "left_btn_link" => "/shop/new-arrivals", "right_image" => "luxury fashion 7 2.png", "right_subtitle" => "Luxury Bridal", "right_title" => "Bridal Couture", "right_btn_text" => "Explore Collection", "right_btn_link" => "/shop/bridals"],
         ];
         Store::create([
-            "StoreName" => "Zarka Couture",
-            "StoreEmail" => "info@zarkaboutique.com",
+            "StoreName" => "Inspired By Nature",
+            "StoreEmail" => "info@inspiredbynature.com",
             "theme_settings" => json_encode($settings),
         ]);
         echo "Store seeded OK\n";

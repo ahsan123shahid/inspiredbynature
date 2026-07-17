@@ -156,7 +156,7 @@ class DatabaseSeeder extends Seeder
         Notification::create(['title' => 'Order Confirmation!', 'description' => 'Your order#21 has been confirmed and will be delivered in two or 3 working days.']);
 
         // Store settings from zappos.sql
-        Store::create(['StoreName' => 'ZARKA COUTURE', 'StoreEmail' => 'admin@zarka.com', 'SenderEmail' => 'admin@zarka.com', 'StoreIndustry' => 'clothing', 'LegalName' => 'ZARKA COUTURE', 'Phone' => '03015158089', 'Streets' => '20 Street, 20 Gulshan-E-Khudadad Main Blvd, Naseerabad', 'Apartment' => '', 'City' => 'Rawalpindi', 'ZipCode' => '44000', 'Country' => 'Pakistan', 'TimeZone' => '+00:00', 'UnitSystem' => 'Imperial System', 'WeightUnit' => 'Kilo Gram(Kg)', 'Currency' => 'USD']);
+        Store::create(['StoreName' => 'Inspired By Nature', 'StoreEmail' => 'info@inspiredbynature.com', 'SenderEmail' => 'noreply@inspiredbynature.com', 'StoreIndustry' => 'Perfume', 'LegalName' => 'Inspired By Nature LLC', 'Phone' => '0301 5158089', 'Streets' => '20 Street, 20 Gulshan-E-Khudadad Main Blvd, Naseerabad', 'Apartment' => '', 'City' => 'Rawalpindi', 'ZipCode' => '44000', 'Country' => 'Pakistan', 'TimeZone' => 'UTC+5', 'UnitSystem' => 'metric', 'WeightUnit' => 'kg', 'Currency' => 'PKR']);
 
         // Tax from zappos.sql
         Tax::create(['digital' => '0', 'food' => '9', 'nonfood' => '21']);
