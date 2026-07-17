@@ -93,8 +93,35 @@ const AdminCategories = () => {
     setLoading(true);
     setError("");
     try {
-      const res = await customFetch.get("/categories");
-      setCategories(normalize(res.data));
+      const [catRes, navRes] = await Promise.all([
+        customFetch.get("/categories"),
+        customFetch.get("/nav-items"),
+      ]);
+      setCategories(normalize(catRes.data));
+
+      // Auto-sync nav items to categories
+      const cats = catRes.data || [];
+      const navItems = navRes.data || [];
+      for (const nav of navItems) {
+        const slug = nav.slug || "";
+        const match = cats.find((c: any) => c.handle === slug);
+        if (!match) {
+          try {
+            await customFetch.post("/categories", {
+              cat_title: nav.label,
+              handle: slug,
+              cat_img: "",
+            });
+          } catch {
+            // skip
+          }
+        }
+      }
+      // Re-fetch after sync
+      if (navItems.length > 0) {
+        const res = await customFetch.get("/categories");
+        setCategories(normalize(res.data));
+      }
     } catch {
       setError("Failed to load categories. Make sure the backend is running.");
     } finally {
