@@ -19,9 +19,11 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => explode(',', env('ALLOWED_CORS_ORIGINS', 'http://localhost:5173,http://localhost:3000,http://localhost:8000')),
+    'allowed_origins' => explode(',', env('ALLOWED_CORS_ORIGINS', 'http://localhost:5173,http://localhost:3000,http://localhost:8000,https://inspiredbynature.vercel.app')),
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => [
+        '/^https:\/\/.*\.vercel\.app$/',
+    ],
 
     'allowed_headers' => ['*'],
 

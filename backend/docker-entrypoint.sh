@@ -11,6 +11,7 @@ echo "APP_NAME=Store" > /var/www/html/.env
 echo "APP_ENV=production" >> /var/www/html/.env
 echo "APP_KEY=base64:egS+g2OC0U8NaEgM19xPl8+KEpytaxjyhH0dmA8x2Yo=" >> /var/www/html/.env
 echo "APP_DEBUG=${APP_DEBUG:-false}" >> /var/www/html/.env
+echo "ALLOWED_CORS_ORIGINS=${ALLOWED_CORS_ORIGINS:-http://localhost:5173,http://localhost:3000,https://inspiredbynature.vercel.app}" >> /var/www/html/.env
 
 DB_CONN="${DB_CONNECTION:-sqlite}"
 echo "DB_CONNECTION=${DB_CONN}" >> /var/www/html/.env
