@@ -8,6 +8,8 @@ interface FooterProps {
 
 const Footer = ({ themeSettings }: FooterProps) => {
   const logoText = themeSettings?.logo_text || "INSPIREDBYNATURE";
+  const logoImage = themeSettings?.logo_image || "ibn-logo.svg";
+  const logoSrc = logoImage.startsWith("http") || logoImage.startsWith("/") ? logoImage : `/assets/${logoImage}`;
   const contactPhone = themeSettings?.footer?.phone || "0301 5158089";
   const contactEmail = themeSettings?.footer?.email || "info@inspiredbynature.com";
   return (
@@ -17,7 +19,7 @@ const Footer = ({ themeSettings }: FooterProps) => {
           {/* Brand Column */}
           <div className="md:col-span-1">
             <Link to="/" className="block mb-4">
-               <img src="/assets/ibn-logo.svg" alt="INSPIREDBYNATURE" className="max-h-24 w-auto object-contain" />
+               <img src={logoSrc} alt={logoText || "INSPIREDBYNATURE"} className="max-h-24 w-auto object-contain" />
             </Link>
             <p className="text-caption text-shade-50 leading-relaxed mb-4">
               Fine fragrances, eau de parfum, and luxury gift sets — crafted for those who value elegance and nature.

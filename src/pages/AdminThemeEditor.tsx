@@ -36,6 +36,7 @@ interface ThemeSettings {
     enabled: boolean;
   };
   logo_text: string;
+  logo_image: string;
   slides: Slide[];
   categories_section: {
     enabled: boolean;
@@ -117,6 +118,7 @@ const defaultThemeSettings: ThemeSettings = {
     enabled: true,
   },
   logo_text: "INSPIREDBYNATURE",
+  logo_image: "ibn-logo.svg",
   slides: [
     {
       id: "1",
@@ -236,6 +238,7 @@ const AdminThemeEditor = () => {
     | { type: "slide"; slideId: string }
     | { type: "promo"; side: "left" | "right" }
     | { type: "instagram"; index: number }
+    | { type: "logo" }
     | null
   >(null);
 
@@ -316,6 +319,9 @@ const AdminThemeEditor = () => {
         },
       }));
       toast.success("Lookbook image updated");
+    } else if (mediaTarget.type === "logo") {
+      setSettings((prev) => ({ ...prev, logo_image: filename }));
+      toast.success("Logo image updated");
     }
 
     setShowMediaModal(false);
@@ -597,6 +603,39 @@ const AdminThemeEditor = () => {
                     className="w-full border border-[#e0e0e0] rounded-lg px-3 py-2 text-sm outline-none focus:border-[#2c6ecb] focus:ring-1 focus:ring-[#2c6ecb]"
                   />
                   <p className="text-[11px] text-[#6d7175] mt-1">Displayed in serif luxury font at header center.</p>
+                </div>
+
+                {/* Logo Image Selector */}
+                <div>
+                  <label className="block text-xs font-semibold text-[#202223] mb-1">Logo Image</label>
+                  <div className="flex items-center gap-3">
+                    <div className="w-20 h-14 bg-gray-100 border rounded overflow-hidden flex items-center justify-center shrink-0">
+                      <img
+                        src={settings.logo_image.startsWith("http") || settings.logo_image.startsWith("/") ? settings.logo_image : `/assets/${settings.logo_image}`}
+                        className="max-w-full max-h-full object-contain"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                      />
+                    </div>
+                    <div className="flex-1 flex flex-col gap-1">
+                      <input
+                        type="text"
+                        placeholder="logo.svg"
+                        value={settings.logo_image}
+                        onChange={(e) => setSettings({ ...settings, logo_image: e.target.value })}
+                        className="w-full border border-[#e0e0e0] rounded-lg px-2 py-1.5 text-xs outline-none focus:border-[#2c6ecb]"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMediaTarget({ type: "logo" });
+                          setShowMediaModal(true);
+                        }}
+                        className="flex items-center justify-center gap-1 cursor-pointer bg-white border border-[#e0e0e0] rounded px-2 py-1.5 text-[10px] font-semibold text-[#6d7175] hover:bg-gray-50 transition-colors w-full"
+                      >
+                        Select from Media
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 <div>
