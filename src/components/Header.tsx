@@ -19,14 +19,16 @@ const defaultNavItems = [
 interface HeaderProps {
   logoText?: string;
   logoImage?: string;
+  logoSize?: number;
 }
 
-const Header = ({ logoText, logoImage }: HeaderProps) => {
+const Header = ({ logoText, logoImage, logoSize }: HeaderProps) => {
   const logoSrc = logoImage
     ? logoImage.startsWith("http") || logoImage.startsWith("/")
       ? logoImage
       : `/assets/${logoImage}`
     : "/assets/ibn-logo.svg";
+  const logoHeight = logoSize || 70;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [navItems, setNavItems] = useState(defaultNavItems);
@@ -69,7 +71,7 @@ const Header = ({ logoText, logoImage }: HeaderProps) => {
 
             {/* Logo */}
             <Link to="/">
-              <img src={logoSrc} alt={logoText || "INSPIREDBYNATURE"} className="max-h-16 sm:max-h-[70px] w-auto object-contain" />
+              <img src={logoSrc} alt={logoText || "INSPIREDBYNATURE"} className="w-auto object-contain" style={{ maxHeight: `min(4rem, ${logoHeight}px)` }} />
             </Link>
 
             {/* Desktop navigation */}

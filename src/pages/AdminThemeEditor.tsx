@@ -37,6 +37,7 @@ interface ThemeSettings {
   };
   logo_text: string;
   logo_image: string;
+  logo_size: number;
   slides: Slide[];
   categories_section: {
     enabled: boolean;
@@ -119,6 +120,7 @@ const defaultThemeSettings: ThemeSettings = {
   },
   logo_text: "INSPIREDBYNATURE",
   logo_image: "ibn-logo.svg",
+  logo_size: 70,
   slides: [
     {
       id: "1",
@@ -636,6 +638,23 @@ const AdminThemeEditor = () => {
                       </button>
                     </div>
                   </div>
+                </div>
+
+                {/* Logo Size Slider */}
+                <div>
+                  <label className="block text-xs font-semibold text-[#202223] mb-1">Header Logo Size</label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="range"
+                      min="30"
+                      max="150"
+                      value={settings.logo_size}
+                      onChange={(e) => setSettings({ ...settings, logo_size: Number(e.target.value) })}
+                      className="flex-1 accent-[#2c6ecb]"
+                    />
+                    <span className="text-xs font-medium text-[#202223] w-10 text-right">{settings.logo_size}px</span>
+                  </div>
+                  <p className="text-[11px] text-[#6d7175] mt-1">Controls logo height on desktop. Default: 70px</p>
                 </div>
 
                 <div>

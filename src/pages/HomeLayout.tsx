@@ -30,6 +30,7 @@ export interface ThemeSettings {
   };
   logo_text: string;
   logo_image: string;
+  logo_size: number;
   slides: Slide[];
   categories_section: {
     enabled: boolean;
@@ -112,6 +113,7 @@ export const defaultThemeSettings: ThemeSettings = {
   },
   logo_text: "INSPIREDBYNATURE",
   logo_image: "ibn-logo.svg",
+  logo_size: 70,
   slides: [
     {
       id: "1",
@@ -368,7 +370,7 @@ const HomeLayout = () => {
   return (
     <>
       <ScrollToTop />
-      <Header logoText={settings.logo_text} logoImage={settings.logo_image} />
+      <Header logoText={settings.logo_text} logoImage={settings.logo_image} logoSize={settings.logo_size} />
       <AnimatePresence mode="wait">
         <motion.div
           key={location.pathname}
