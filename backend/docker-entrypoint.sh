@@ -13,17 +13,19 @@ echo "APP_KEY=base64:egS+g2OC0U8NaEgM19xPl8+KEpytaxjyhH0dmA8x2Yo=" >> /var/www/h
 echo "APP_DEBUG=${APP_DEBUG:-false}" >> /var/www/html/.env
 echo "ALLOWED_CORS_ORIGINS=${ALLOWED_CORS_ORIGINS:-http://localhost:5173,http://localhost:3000,https://inspiredbynature.vercel.app}" >> /var/www/html/.env
 
-DB_CONN="${DB_CONNECTION:-sqlite}"
+DB_CONN="${DB_CONNECTION:-pgsql}"
 echo "DB_CONNECTION=${DB_CONN}" >> /var/www/html/.env
 
+# Map Railway's PostgreSQL env vars to Laravel's expected names
+# Railway provides: DATABASE_URL, PGHOST, PGPORT, PGDATABASE, PGUSER, PGPASSWORD
 if [ "$DB_CONN" = "sqlite" ]; then
     echo "DB_DATABASE=/var/www/html/database/database.sqlite" >> /var/www/html/.env
 else
-    if [ ! -z "$DB_HOST" ]; then echo "DB_HOST=${DB_HOST}" >> /var/www/html/.env; fi
-    if [ ! -z "$DB_PORT" ]; then echo "DB_PORT=${DB_PORT}" >> /var/www/html/.env; fi
-    if [ ! -z "$DB_DATABASE" ]; then echo "DB_DATABASE=${DB_DATABASE}" >> /var/www/html/.env; fi
-    if [ ! -z "$DB_USERNAME" ]; then echo "DB_USERNAME=${DB_USERNAME}" >> /var/www/html/.env; fi
-    if [ ! -z "$DB_PASSWORD" ]; then echo "DB_PASSWORD=${DB_PASSWORD}" >> /var/www/html/.env; fi
+    echo "DB_HOST=${PGHOST:-${DB_HOST:-postgres}}" >> /var/www/html/.env
+    echo "DB_PORT=${PGPORT:-${DB_PORT:-5432}}" >> /var/www/html/.env
+    echo "DB_DATABASE=${PGDATABASE:-${DB_DATABASE:-inspiredbynature}}" >> /var/www/html/.env
+    echo "DB_USERNAME=${PGUSER:-${DB_USERNAME:-postgres}}" >> /var/www/html/.env
+    echo "DB_PASSWORD=${PGPASSWORD:-${DB_PASSWORD:-}}" >> /var/www/html/.env
 fi
 
 echo "SESSION_DRIVER=file" >> /var/www/html/.env

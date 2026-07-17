@@ -9,4 +9,30 @@ services:
       - key: APP_KEY
         value: base64:egS+g2OC0U8NaEgM19xPl8+KEpytaxjyhH0dmA8x2Yo=
       - key: DB_CONNECTION
-        value: sqlite
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: inspiredbynature-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: inspiredbynature-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: inspiredbynature-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: inspiredbynature-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: inspiredbynature-db
+          property: password
+
+databases:
+  - name: inspiredbynature-db
+    plan: free
+    databaseName: inspiredbynature
+    region: ohio
