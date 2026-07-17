@@ -130,6 +130,7 @@ Route::middleware('throttle:api')->group(function () {
     // Order creation is public to support guest checkouts
     Route::post('/orders', [OrderController::class, 'store']);
     Route::post('/webhooks/mollie', [\App\Http\Controllers\Api\MollieWebhookController::class, 'handle']);
+    Route::post('/upload', [\App\Http\Controllers\Api\UploadController::class, 'store']);
 
     // ==========================================
     // 2. AUTHENTICATED USER ROUTES
@@ -230,7 +231,6 @@ Route::middleware('throttle:api')->group(function () {
         Route::get('/o-timelines', [OTimelineController::class, 'index']);
         Route::get('/view-counts', [ViewCountController::class, 'index']);
 
-        Route::post('/upload', [App\Http\Controllers\Api\UploadController::class, 'store']);
         Route::get('/media', [App\Http\Controllers\Api\MediaController::class, 'index']);
         Route::delete('/media/{filename}', [App\Http\Controllers\Api\MediaController::class, 'destroy'])->where('filename', '.*');
 
