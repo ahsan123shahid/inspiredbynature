@@ -12,9 +12,6 @@ import {
   HiCheck,
   HiArrowUpTray,
   HiOutlineMagnifyingGlass,
-  HiPencilSquare,
-  HiOutlineArrowUp,
-  HiOutlineArrowDown,
 } from "react-icons/hi2";
 
 interface Slide {
@@ -254,11 +251,7 @@ const AdminThemeEditor = () => {
   const [settings, setSettings] = useState<ThemeSettings>(defaultThemeSettings);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<"general" | "announcement" | "slideshow" | "navigations" | "collections" | "whatsapp" | "installments" | "promotional" | "instagram" | "trust_bar" | "newsletter" | "footer">("general");
-  const [navItems, setNavItems] = useState<{ id: string; label: string; slug: string; sort_order: number }[]>([]);
-  const [navForm, setNavForm] = useState({ label: "", slug: "" });
-  const [editingNav, setEditingNav] = useState<{ id: string; label: string; slug: string; sort_order: number } | null>(null);
-  const [showNavForm, setShowNavForm] = useState(false);
+  const [activeTab, setActiveTab] = useState<"general" | "announcement" | "slideshow" | "collections" | "whatsapp" | "installments" | "promotional" | "instagram" | "trust_bar" | "newsletter" | "footer">("general");
   const [previewMode, setPreviewMode] = useState<"desktop" | "mobile">("desktop");
   const [categories, setCategories] = useState<{ id: number; cat_title: string }[]>([]);
   const [previewKey, setPreviewKey] = useState(0);
@@ -374,28 +367,6 @@ const AdminThemeEditor = () => {
 
 
 
-  const fetchNavItems = async () => {
-    try {
-      const res = await customFetch.get("/nav-items");
-      setNavItems(res.data);
-    } catch {
-      const stored = localStorage.getItem("inspiredbynature_nav_fallback");
-      if (stored) {
-        setNavItems(JSON.parse(stored));
-      } else {
-        const initial = [
-          { id: "1", label: "New Arrivals", slug: "new-arrivals", sort_order: 1 },
-          { id: "2", label: "Women", slug: "women", sort_order: 2 },
-          { id: "3", label: "Men", slug: "men", sort_order: 3 },
-          { id: "4", label: "Unisex", slug: "unisex", sort_order: 4 },
-          { id: "5", label: "Gift Sets", slug: "gift-sets", sort_order: 5 },
-          { id: "6", label: "Special Prices", slug: "special-prices", sort_order: 6 },
-        ];
-        setNavItems(initial);
-      }
-    }
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -459,7 +430,6 @@ const AdminThemeEditor = () => {
     };
 
     fetchData();
-    fetchNavItems();
   }, []);
 
 
@@ -622,16 +592,10 @@ const AdminThemeEditor = () => {
               Slideshow
             </button>
             <button
-              onClick={() => setActiveTab("navigations")}
-              className={`px-4 py-3 border-b-2 whitespace-nowrap ${activeTab === "navigations" ? "border-[#2c6ecb] text-[#2c6ecb] bg-white font-semibold" : "border-transparent hover:text-[#202223]"}`}
-            >
-              Navigations
-            </button>
-            <button
               onClick={() => setActiveTab("collections")}
               className={`px-4 py-3 border-b-2 whitespace-nowrap ${activeTab === "collections" ? "border-[#2c6ecb] text-[#2c6ecb] bg-white font-semibold" : "border-transparent hover:text-[#202223]"}`}
             >
-              Collections
+              Tabs
             </button>
             <button
               onClick={() => setActiveTab("whatsapp")}
@@ -736,6 +700,38 @@ const AdminThemeEditor = () => {
                     <span className="text-xs font-medium text-[#202223] w-10 text-right">{settings.logo_size}px</span>
                   </div>
                   <p className="text-[11px] text-[#6d7175] mt-1">Controls logo height on desktop. Default: 70px</p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-[#202223] mb-1">Categories Section Title</label>
+                  <input
+                    type="text"
+                    value={settings.categories_section.title}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        categories_section: { ...settings.categories_section, title: e.target.value },
+                      })
+                    }
+                    className="w-full border border-[#e0e0e0] rounded-lg px-3 py-2 text-sm outline-none focus:border-[#2c6ecb] focus:ring-1 focus:ring-[#2c6ecb]"
+                  />
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <input
+                    type="checkbox"
+                    id="cat_sec_enabled"
+                    checked={settings.categories_section.enabled}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        categories_section: { ...settings.categories_section, enabled: e.target.checked },
+                      })
+                    }
+                    className="rounded text-[#2c6ecb] focus:ring-[#2c6ecb] border-[#e0e0e0]"
+                  />
+                  <label htmlFor="cat_sec_enabled" className="text-xs font-medium text-[#202223] cursor-pointer">
+                    Enable Category Grid Section
+                  </label>
                 </div>
 
                 <div>
@@ -1165,198 +1161,7 @@ const AdminThemeEditor = () => {
               </div>
             )}
 
-            {/* 4. Navigations + Category */}
-            {activeTab === "navigations" && (
-              <div className="space-y-4">
-                <h3 className="text-sm font-semibold text-[#202223] border-b pb-2">Category Section</h3>
-                <div>
-                  <label className="block text-xs font-semibold text-[#202223] mb-1">Section Title</label>
-                  <input
-                    type="text"
-                    value={settings.categories_section.title}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        categories_section: { ...settings.categories_section, title: e.target.value },
-                      })
-                    }
-                    className="w-full border border-[#e0e0e0] rounded-lg px-3 py-2 text-sm outline-none focus:border-[#2c6ecb] focus:ring-1 focus:ring-[#2c6ecb]"
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    id="cat_sec_enabled"
-                    checked={settings.categories_section.enabled}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        categories_section: { ...settings.categories_section, enabled: e.target.checked },
-                      })
-                    }
-                    className="rounded text-[#2c6ecb] focus:ring-[#2c6ecb] border-[#e0e0e0]"
-                  />
-                  <label htmlFor="cat_sec_enabled" className="text-xs font-medium text-[#202223] cursor-pointer">
-                    Enable Category Grid Section
-                  </label>
-                </div>
-
-                <h3 className="text-sm font-semibold text-[#202223] border-b pb-2 mt-6">Navigation Items</h3>
-                <p className="text-xs text-[#6d7175]">These items appear in the header nav bar and the category grid on the home page.</p>
-
-                {showNavForm && (
-                  <div className="bg-gray-50 border border-[#e0e0e0] rounded-lg p-4 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold text-[#202223]">{editingNav ? "Edit" : "Add"} Nav Item</span>
-                      <button onClick={() => { setShowNavForm(false); setEditingNav(null); setNavForm({ label: "", slug: "" }); }} className="text-[#6d7175] hover:text-[#202223]">
-                        <HiXMark className="w-4 h-4" />
-                      </button>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-[#202223] mb-1">Label</label>
-                      <input
-                        type="text"
-                        value={navForm.label}
-                        onChange={(e) => {
-                          const label = e.target.value;
-                          setNavForm((prev) => ({
-                            ...prev,
-                            label,
-                            slug: editingNav ? prev.slug : label.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").trim(),
-                          }));
-                        }}
-                        placeholder="e.g. New Arrivals"
-                        className="w-full border border-[#e0e0e0] rounded-lg px-3 py-2 text-sm outline-none focus:border-[#2c6ecb]"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-[#202223] mb-1">Slug</label>
-                      <input
-                        type="text"
-                        value={navForm.slug}
-                        onChange={(e) => setNavForm((prev) => ({ ...prev, slug: e.target.value }))}
-                        placeholder="e.g. new-arrivals"
-                        className="w-full border border-[#e0e0e0] rounded-lg px-3 py-2 text-sm outline-none focus:border-[#2c6ecb]"
-                      />
-                      <p className="text-xs text-[#6d7175] mt-1">URL: /shop/&lt;slug&gt;</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={async () => {
-                          if (!navForm.label.trim() || !navForm.slug.trim()) {
-                            toast.error("Label and slug are required");
-                            return;
-                          }
-                          const payload = { label: navForm.label.trim(), slug: navForm.slug.trim().toLowerCase().replace(/\s+/g, "-"), sort_order: editingNav ? editingNav.sort_order : navItems.length + 1 };
-                          try {
-                            if (editingNav) {
-                              await customFetch.put(`/nav-items/${editingNav.id}`, payload);
-                              toast.success("Nav item updated");
-                            } else {
-                              await customFetch.post("/nav-items", payload);
-                              toast.success("Nav item added");
-                            }
-                            setShowNavForm(false);
-                            setEditingNav(null);
-                            setNavForm({ label: "", slug: "" });
-                            fetchNavItems();
-                          } catch (e: any) {
-                            toast.error(e?.response?.data?.message || "Failed to save");
-                          }
-                        }}
-                        className="bg-[#2c6ecb] text-white px-4 py-2 rounded-lg text-xs font-medium hover:bg-[#1f5bb3] transition-colors"
-                      >
-                        {editingNav ? "Update" : "Save"}
-                      </button>
-                      <button
-                        onClick={() => { setShowNavForm(false); setEditingNav(null); setNavForm({ label: "", slug: "" }); }}
-                        className="text-[#6d7175] px-3 py-2 text-xs hover:text-[#202223] transition-colors"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                <button
-                  onClick={() => { setNavForm({ label: "", slug: "" }); setEditingNav(null); setShowNavForm(true); }}
-                  className="flex items-center gap-1 text-[#2c6ecb] text-xs font-medium hover:text-[#1f5bb3] transition-colors"
-                >
-                  <HiOutlinePlus className="w-3.5 h-3.5" /> Add Item
-                </button>
-
-                <div className="border border-[#e0e0e0] rounded-lg overflow-hidden">
-                  {navItems.length === 0 ? (
-                    <div className="p-6 text-center text-[#6d7175] text-xs">No nav items yet.</div>
-                  ) : (
-                    <div className="divide-y divide-[#e0e0e0]">
-                      {navItems.map((item, index) => (
-                        <div key={item.id} className="flex items-center justify-between p-3 hover:bg-gray-50 transition-colors">
-                          <div className="flex items-center gap-3">
-                            <div className="flex flex-col gap-0.5">
-                              <button
-                                onClick={async () => {
-                                  if (index === 0) return;
-                                  const arr = [...navItems];
-                                  [arr[index], arr[index - 1]] = [arr[index - 1], arr[index]];
-                                  arr.forEach((it, i) => (it.sort_order = i + 1));
-                                  setNavItems(arr);
-                                  try { await Promise.all(arr.map((it) => customFetch.put(`/nav-items/${it.id}`, { sort_order: it.sort_order }))); } catch { fetchNavItems(); }
-                                }}
-                                disabled={index === 0}
-                                className="text-[#6d7175] hover:text-[#202223] disabled:opacity-30"
-                              >
-                                <HiOutlineArrowUp className="w-3 h-3" />
-                              </button>
-                              <button
-                                onClick={async () => {
-                                  if (index === navItems.length - 1) return;
-                                  const arr = [...navItems];
-                                  [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
-                                  arr.forEach((it, i) => (it.sort_order = i + 1));
-                                  setNavItems(arr);
-                                  try { await Promise.all(arr.map((it) => customFetch.put(`/nav-items/${it.id}`, { sort_order: it.sort_order }))); } catch { fetchNavItems(); }
-                                }}
-                                disabled={index === navItems.length - 1}
-                                className="text-[#6d7175] hover:text-[#202223] disabled:opacity-30"
-                              >
-                                <HiOutlineArrowDown className="w-3 h-3" />
-                              </button>
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium text-[#202223]">{item.label}</p>
-                              <p className="text-xs text-[#6d7175]">/shop/{item.slug}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <button
-                              onClick={() => { setEditingNav(item); setNavForm({ label: item.label, slug: item.slug }); setShowNavForm(true); }}
-                              className="p-1.5 text-[#6d7175] hover:text-[#2c6ecb] transition-colors"
-                            >
-                              <HiPencilSquare className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              onClick={async () => {
-                                try {
-                                  await customFetch.delete(`/nav-items/${item.id}`);
-                                  toast.success("Nav item deleted");
-                                  fetchNavItems();
-                                } catch { toast.error("Failed to delete"); }
-                              }}
-                              className="p-1.5 text-[#6d7175] hover:text-red-500 transition-colors"
-                            >
-                              <HiOutlineTrash className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* 5. Featured Collections Tabs */}
+            {/* 4. Featured Collections Tabs */}
             {activeTab === "collections" && (
               <div className="space-y-4">
                 <h3 className="text-sm font-semibold text-[#202223] border-b pb-2">Featured Collections Tabs</h3>
@@ -1415,7 +1220,7 @@ const AdminThemeEditor = () => {
               </div>
             )}
 
-            {/* 6. WhatsApp Floating Widget */}
+            {/* 5. WhatsApp Floating Widget */}
             {activeTab === "whatsapp" && (
               <div className="space-y-4">
                 <h3 className="text-sm font-semibold text-[#202223] border-b pb-2">WhatsApp Float Chat</h3>
@@ -1494,7 +1299,7 @@ const AdminThemeEditor = () => {
               </div>
             )}
 
-            {/* 7. Promotional Split Section */}
+            {/* 5. Promotional Split Section */}
             {activeTab === "promotional" && (
               <div className="space-y-4">
                 <h3 className="text-sm font-semibold text-[#202223] border-b pb-2">Promotional Split Section</h3>
