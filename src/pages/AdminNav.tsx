@@ -74,9 +74,10 @@ const AdminNav = () => {
       toast.error("Label and slug are required");
       return;
     }
+    const slug = form.slug.trim().toLowerCase().replace(/\s+/g, "-");
     const payload = {
       label: form.label.trim(),
-      slug: form.slug.trim().toLowerCase().replace(/\s+/g, "-"),
+      slug,
       sort_order: editing ? editing.sort_order : items.length + 1,
     };
     try {
@@ -87,6 +88,22 @@ const AdminNav = () => {
         await customFetch.post("/nav-items", payload);
         toast.success("Nav item added");
       }
+
+      // Sync to categories
+      try {
+        const catRes = await customFetch.get("/categories");
+        const cats = catRes.data || [];
+        const match = cats.find((c: any) => c.handle === slug);
+        const catPayload = { cat_title: form.label.trim(), handle: slug, cat_img: "" };
+        if (match) {
+          await customFetch.put(`/categories/${match.cat_id}`, catPayload);
+        } else {
+          await customFetch.post("/categories", catPayload);
+        }
+      } catch {
+        // Silently fail - categories sync is secondary
+      }
+
       resetForm();
       fetchData();
     } catch (e: any) {
@@ -98,7 +115,23 @@ const AdminNav = () => {
     if (!deleteTarget) return;
     setDeleting(true);
     try {
+      const item = items.find((i) => i.id === deleteTarget.id);
       await customFetch.delete(`/nav-items/${deleteTarget.id}`);
+
+      // Delete matching category
+      if (item) {
+        try {
+          const catRes = await customFetch.get("/categories");
+          const cats = catRes.data || [];
+          const match = cats.find((c: any) => c.handle === item.slug);
+          if (match) {
+            await customFetch.delete(`/categories/${match.cat_id}`);
+          }
+        } catch {
+          // Silently fail
+        }
+      }
+
       toast.success("Nav item deleted");
       setDeleteTarget(null);
       fetchData();
