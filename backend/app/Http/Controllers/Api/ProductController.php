@@ -19,62 +19,70 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $page = intval($request->input('page', 1));
-        $limit = intval($request->input('per_page', 12));
-        $sortBy = $request->input('sort_by', 'created_at');
-        $sortOrder = strtolower($request->input('sort_order', 'desc')) === 'asc' ? 'asc' : 'desc';
+        try {
+            $page = intval($request->input('page', 1));
+            $limit = intval($request->input('per_page', 12));
+            $sortBy = $request->input('sort_by', 'created_at');
+            $sortOrder = strtolower($request->input('sort_order', 'desc')) === 'asc' ? 'asc' : 'desc';
 
-        // Filters
-        $categoryId = $request->input('category_id');
-        $subcategoryId = $request->input('subcategory_id');
-        $search = $request->input('search');
-        $priceMin = $request->input('price_min');
-        $priceMax = $request->input('price_max');
+            // Filters
+            $categoryId = $request->input('category_id');
+            $subcategoryId = $request->input('subcategory_id');
+            $search = $request->input('search');
+            $priceMin = $request->input('price_min');
+            $priceMax = $request->input('price_max');
 
-        // Cache Versioning (Buster) Pattern:
-        // Incrementing this key invalidates all previous keys instantly across all cache drivers (File/Redis).
-        $cacheVersion = Cache::rememberForever('products_cache_version', fn () => 1);
+            // Cache Versioning (Buster) Pattern:
+            // Incrementing this key invalidates all previous keys instantly across all cache drivers (File/Redis).
+            $cacheVersion = Cache::rememberForever('products_cache_version', fn () => 1);
 
-        $filterHash = md5(json_encode([
-            $categoryId, $subcategoryId, $search, $priceMin, $priceMax
-        ]));
+            $filterHash = md5(json_encode([
+                $categoryId, $subcategoryId, $search, $priceMin, $priceMax
+            ]));
 
-        $cacheKey = "products:v{$cacheVersion}:page_{$page}:limit_{$limit}:sort_{$sortBy}_{$sortOrder}:filters_{$filterHash}";
+            $cacheKey = "products:v{$cacheVersion}:page_{$page}:limit_{$limit}:sort_{$sortBy}_{$sortOrder}:filters_{$filterHash}";
 
-        $paginatedProducts = Cache::remember($cacheKey, 3600, function () use (
-            $categoryId, $subcategoryId, $search, $priceMin, $priceMax, $sortBy, $sortOrder, $limit
-        ) {
-            $query = Product::with(['categoryRelation', 'subcategory', 'collections', 'colors', 'sizes', 'additionalImages']);
+            $paginatedProducts = Cache::remember($cacheKey, 3600, function () use (
+                $categoryId, $subcategoryId, $search, $priceMin, $priceMax, $sortBy, $sortOrder, $limit
+            ) {
+                $query = Product::with(['categoryRelation', 'subcategory', 'collections', 'colors', 'sizes', 'additionalImages']);
 
-            // Apply filters
-            if ($categoryId) {
-                $query->where('category_id', $categoryId);
-            }
-            if ($subcategoryId) {
-                $query->where('subcategory_id', $subcategoryId);
-            }
-            if ($search) {
-                $query->where('title', 'like', "%{$search}%");
-            }
-            if ($priceMin !== null) {
-                $query->where('price', '>=', floatval($priceMin));
-            }
-            if ($priceMax !== null) {
-                $query->where('price', '<=', floatval($priceMax));
-            }
+                // Apply filters
+                if ($categoryId) {
+                    $query->where('category_id', $categoryId);
+                }
+                if ($subcategoryId) {
+                    $query->where('subcategory_id', $subcategoryId);
+                }
+                if ($search) {
+                    $query->where('title', 'like', "%{$search}%");
+                }
+                if ($priceMin !== null) {
+                    $query->where('price', '>=', floatval($priceMin));
+                }
+                if ($priceMax !== null) {
+                    $query->where('price', '<=', floatval($priceMax));
+                }
 
-            // Validate and apply sorting
-            $allowedSorts = ['price', 'popularity', 'created_at', 'stock'];
-            if (in_array($sortBy, $allowedSorts)) {
-                $query->orderBy($sortBy, $sortOrder);
-            } else {
-                $query->orderBy('created_at', 'desc');
-            }
+                // Validate and apply sorting
+                $allowedSorts = ['price', 'popularity', 'created_at', 'stock'];
+                if (in_array($sortBy, $allowedSorts)) {
+                    $query->orderBy($sortBy, $sortOrder);
+                } else {
+                    $query->orderBy('created_at', 'desc');
+                }
 
-            return $query->paginate($limit);
-        });
+                return $query->paginate($limit);
+            });
 
-        return $this->paginatedResponse($paginatedProducts, 'Products list fetched successfully.');
+            return $this->paginatedResponse($paginatedProducts, 'Products list fetched successfully.');
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ], 500);
+        }
     }
 
     public function store(Request $request)
