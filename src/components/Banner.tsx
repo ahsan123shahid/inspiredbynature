@@ -101,13 +101,8 @@ const Banner = ({ themeSettings }: BannerProps) => {
         const loaded = loadedImages.has(imageUrl);
         const align = alignmentClasses[slide.content_alignment] || alignmentClasses.center;
 
-        return (
-          <div
-            key={slide.id || index}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out flex flex-col justify-center ${align} ${
-              isActive ? "opacity-100 z-10" : "opacity-0 z-0"
-            }`}
-          >
+        const content = (
+          <>
             <div
               className={`absolute inset-0 transition-[transform] duration-[10000ms] ease-out ${
                 isActive ? "scale-105" : "scale-100"
@@ -133,7 +128,7 @@ const Banner = ({ themeSettings }: BannerProps) => {
               />
             </div>
 
-            <div className="relative z-20 px-8 flex flex-col max-w-3xl mx-5 animate-fade-in">
+            <div className="relative z-20 px-8 flex flex-col max-w-3xl mx-5 animate-fade-in pointer-events-none">
               <p
                 className="text-script-lead mb-2"
                 style={{ color: slide.subtitle_color }}
@@ -146,19 +141,45 @@ const Banner = ({ themeSettings }: BannerProps) => {
               >
                 {slide.title}
               </h2>
-              <div className="flex justify-start items-center gap-4 pt-6 flex-col sm:flex-row">
-                <Link
-                  to={slide.btn_link || "/shop"}
-                  className="text-button-label uppercase tracking-tracked font-semibold px-10 py-4 rounded-pill hover:opacity-80 transition-all duration-300"
-                  style={{
-                    backgroundColor: slide.btn_bg,
-                    color: slide.btn_text_color,
-                  }}
-                >
-                  {slide.btn_text || "Shop Now"}
-                </Link>
-              </div>
+              {slide.btn_text && (
+                <div className="flex justify-start items-center gap-4 pt-6 flex-col sm:flex-row pointer-events-auto">
+                  <span
+                    className="text-button-label uppercase tracking-tracked font-semibold px-10 py-4 rounded-pill hover:opacity-80 transition-all duration-300 inline-block"
+                    style={{
+                      backgroundColor: slide.btn_bg,
+                      color: slide.btn_text_color,
+                    }}
+                  >
+                    {slide.btn_text}
+                  </span>
+                </div>
+              )}
             </div>
+          </>
+        );
+
+        if (slide.btn_link) {
+          return (
+            <Link
+              key={slide.id || index}
+              to={slide.btn_link}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out flex flex-col justify-center ${align} ${
+                isActive ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
+            >
+              {content}
+            </Link>
+          );
+        }
+
+        return (
+          <div
+            key={slide.id || index}
+            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out flex flex-col justify-center ${align} ${
+              isActive ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
+          >
+            {content}
           </div>
         );
       })}
