@@ -19,8 +19,17 @@ interface Slide {
   title: string;
   subtitle: string;
   image: string;
+  mobile_image: string;
   btn_text: string;
   btn_link: string;
+  overlay_color: string;
+  overlay_opacity: number;
+  title_color: string;
+  subtitle_color: string;
+  content_alignment: "left" | "center" | "right";
+  btn_bg: string;
+  btn_text_color: string;
+  slide_duration: number;
 }
 
 interface CollectionTab {
@@ -127,16 +136,34 @@ const defaultThemeSettings: ThemeSettings = {
       title: "SATORI 2026",
       subtitle: "STILLNESS & LUXURY",
       image: "banner1.jpg",
+      mobile_image: "",
       btn_text: "LIVE NOW",
       btn_link: "/shop/luxury-collection",
+      overlay_color: "#000000",
+      overlay_opacity: 0.4,
+      title_color: "#ffffff",
+      subtitle_color: "#ffffff",
+      content_alignment: "center",
+      btn_bg: "#ffffff",
+      btn_text_color: "#151515",
+      slide_duration: 5000,
     },
     {
       id: "2",
       title: "FESTIVE EID II 2026",
       subtitle: "NEW ARRIVALS",
       image: "banner.jpg",
+      mobile_image: "",
       btn_text: "SHOP NOW",
       btn_link: "/shop/women",
+      overlay_color: "#000000",
+      overlay_opacity: 0.4,
+      title_color: "#ffffff",
+      subtitle_color: "#ffffff",
+      content_alignment: "center",
+      btn_bg: "#ffffff",
+      btn_text_color: "#151515",
+      slide_duration: 5000,
     },
   ],
   categories_section: {
@@ -238,6 +265,7 @@ const AdminThemeEditor = () => {
   const [mediaUploading, setMediaUploading] = useState(false);
   const [mediaTarget, setMediaTarget] = useState<
     | { type: "slide"; slideId: string }
+    | { type: "slide-mobile"; slideId: string }
     | { type: "promo"; side: "left" | "right" }
     | { type: "instagram"; index: number }
     | { type: "logo" }
@@ -300,7 +328,15 @@ const AdminThemeEditor = () => {
           s.id === mediaTarget.slideId ? { ...s, image: filename } : s
         ),
       }));
-      toast.success("Slide image updated");
+      toast.success("Desktop image updated");
+    } else if (mediaTarget.type === "slide-mobile") {
+      setSettings((prev) => ({
+        ...prev,
+        slides: prev.slides.map((s) =>
+          s.id === mediaTarget.slideId ? { ...s, mobile_image: filename } : s
+        ),
+      }));
+      toast.success("Mobile image updated");
     } else if (mediaTarget.type === "promo") {
       setSettings((prev) => ({
         ...prev,
@@ -429,8 +465,17 @@ const AdminThemeEditor = () => {
       title: "NEW SLIDE",
       subtitle: "LUXURY BRANDING",
       image: "banner1.jpg",
+      mobile_image: "",
       btn_text: "SHOP NOW",
       btn_link: "/shop",
+      overlay_color: "#000000",
+      overlay_opacity: 0.4,
+      title_color: "#ffffff",
+      subtitle_color: "#ffffff",
+      content_alignment: "center",
+      btn_bg: "#ffffff",
+      btn_text_color: "#151515",
+      slide_duration: 5000,
     };
     setSettings((prev) => ({
       ...prev,
@@ -855,7 +900,7 @@ const AdminThemeEditor = () => {
                       </div>
 
                       <div>
-                        <label className="block text-[11px] font-semibold text-[#202223] mb-1">Banner Image</label>
+                        <label className="block text-[11px] font-semibold text-[#202223] mb-1">Desktop Image</label>
                         <div className="flex items-center gap-3">
                           <div className="w-16 h-12 bg-gray-100 border rounded overflow-hidden flex items-center justify-center shrink-0">
                             <img
@@ -869,16 +914,49 @@ const AdminThemeEditor = () => {
                           <div className="flex-1 flex flex-col gap-1">
                             <input
                               type="text"
-                              placeholder="image_name.jpg"
+                              placeholder="desktop_image.jpg"
                               value={slide.image}
                               onChange={(e) => updateSlideField(slide.id, "image", e.target.value)}
                               className="w-full border border-[#e0e0e0] rounded-lg px-2 py-1 text-xs outline-none focus:border-[#2c6ecb]"
                             />
-                            {/* Media Selector trigger */}
                             <button
                               type="button"
                               onClick={() => {
                                 setMediaTarget({ type: "slide", slideId: slide.id });
+                                setShowMediaModal(true);
+                              }}
+                              className="flex items-center justify-center gap-1 cursor-pointer bg-white border border-[#e0e0e0] rounded px-2 py-1.5 text-[10px] font-semibold text-[#6d7175] hover:bg-gray-50 transition-colors w-full"
+                            >
+                              <HiOutlinePhoto className="text-xs" /> Select from Media
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-semibold text-[#202223] mb-1">Mobile Image</label>
+                        <div className="flex items-center gap-3">
+                          <div className="w-16 h-12 bg-gray-100 border rounded overflow-hidden flex items-center justify-center shrink-0">
+                            <img
+                              src={slide.mobile_image && (slide.mobile_image.startsWith("http") || slide.mobile_image.startsWith("/")) ? slide.mobile_image : (slide.mobile_image ? `/assets/${slide.mobile_image}` : "")}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display = "none";
+                              }}
+                            />
+                          </div>
+                          <div className="flex-1 flex flex-col gap-1">
+                            <input
+                              type="text"
+                              placeholder="mobile_image.jpg (leave empty to use desktop)"
+                              value={slide.mobile_image}
+                              onChange={(e) => updateSlideField(slide.id, "mobile_image", e.target.value)}
+                              className="w-full border border-[#e0e0e0] rounded-lg px-2 py-1 text-xs outline-none focus:border-[#2c6ecb]"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setMediaTarget({ type: "slide-mobile", slideId: slide.id });
                                 setShowMediaModal(true);
                               }}
                               className="flex items-center justify-center gap-1 cursor-pointer bg-white border border-[#e0e0e0] rounded px-2 py-1.5 text-[10px] font-semibold text-[#6d7175] hover:bg-gray-50 transition-colors w-full"
@@ -930,6 +1008,153 @@ const AdminThemeEditor = () => {
                           />
                         </div>
                       </div>
+
+                      <details className="border border-dashed border-[#e0e0e0] rounded-lg p-3 group open:bg-gray-50/50">
+                        <summary className="text-[10px] font-bold text-[#6d7175] uppercase tracking-wider cursor-pointer select-none group-open:text-[#202223]">
+                          Advanced Styles
+                        </summary>
+                        <div className="mt-3 space-y-3">
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <label className="block text-[10px] font-semibold text-[#202223] mb-1">Overlay Color</label>
+                              <input
+                                type="color"
+                                value={slide.overlay_color}
+                                onChange={(e) => updateSlideField(slide.id, "overlay_color", e.target.value)}
+                                className="w-full h-8 rounded cursor-pointer border border-[#e0e0e0]"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-semibold text-[#202223] mb-1">Overlay Opacity</label>
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="range"
+                                  min="0"
+                                  max="100"
+                                  value={Math.round(slide.overlay_opacity * 100)}
+                                  onChange={(e) => updateSlideField(slide.id, "overlay_opacity", String(Number(e.target.value) / 100))}
+                                  className="flex-1 accent-[#2c6ecb]"
+                                />
+                                <span className="text-[10px] font-mono w-8 text-right">{Math.round(slide.overlay_opacity * 100)}%</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <label className="block text-[10px] font-semibold text-[#202223] mb-1">Title Color</label>
+                              <div className="flex gap-2 items-center">
+                                <input
+                                  type="color"
+                                  value={slide.title_color}
+                                  onChange={(e) => updateSlideField(slide.id, "title_color", e.target.value)}
+                                  className="w-8 h-8 rounded cursor-pointer border border-[#e0e0e0] shrink-0"
+                                />
+                                <input
+                                  type="text"
+                                  value={slide.title_color}
+                                  onChange={(e) => updateSlideField(slide.id, "title_color", e.target.value)}
+                                  className="w-full border border-[#e0e0e0] rounded px-2 py-1 text-[11px] outline-none font-mono"
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-semibold text-[#202223] mb-1">Subtitle Color</label>
+                              <div className="flex gap-2 items-center">
+                                <input
+                                  type="color"
+                                  value={slide.subtitle_color}
+                                  onChange={(e) => updateSlideField(slide.id, "subtitle_color", e.target.value)}
+                                  className="w-8 h-8 rounded cursor-pointer border border-[#e0e0e0] shrink-0"
+                                />
+                                <input
+                                  type="text"
+                                  value={slide.subtitle_color}
+                                  onChange={(e) => updateSlideField(slide.id, "subtitle_color", e.target.value)}
+                                  className="w-full border border-[#e0e0e0] rounded px-2 py-1 text-[11px] outline-none font-mono"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="block text-[10px] font-semibold text-[#202223] mb-1">Content Alignment</label>
+                            <div className="flex gap-1">
+                              {(["left", "center", "right"] as const).map((align) => (
+                                <button
+                                  key={align}
+                                  type="button"
+                                  onClick={() => updateSlideField(slide.id, "content_alignment", align)}
+                                  className={`flex-1 text-[10px] font-semibold py-1.5 rounded border transition-colors capitalize ${
+                                    slide.content_alignment === align
+                                      ? "bg-[#2c6ecb] text-white border-[#2c6ecb]"
+                                      : "bg-white text-[#6d7175] border-[#e0e0e0] hover:border-gray-300"
+                                  }`}
+                                >
+                                  {align}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <label className="block text-[10px] font-semibold text-[#202223] mb-1">Button Background</label>
+                              <div className="flex gap-2 items-center">
+                                <input
+                                  type="color"
+                                  value={slide.btn_bg}
+                                  onChange={(e) => updateSlideField(slide.id, "btn_bg", e.target.value)}
+                                  className="w-8 h-8 rounded cursor-pointer border border-[#e0e0e0] shrink-0"
+                                />
+                                <input
+                                  type="text"
+                                  value={slide.btn_bg}
+                                  onChange={(e) => updateSlideField(slide.id, "btn_bg", e.target.value)}
+                                  className="w-full border border-[#e0e0e0] rounded px-2 py-1 text-[11px] outline-none font-mono"
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-semibold text-[#202223] mb-1">Button Text Color</label>
+                              <div className="flex gap-2 items-center">
+                                <input
+                                  type="color"
+                                  value={slide.btn_text_color}
+                                  onChange={(e) => updateSlideField(slide.id, "btn_text_color", e.target.value)}
+                                  className="w-8 h-8 rounded cursor-pointer border border-[#e0e0e0] shrink-0"
+                                />
+                                <input
+                                  type="text"
+                                  value={slide.btn_text_color}
+                                  onChange={(e) => updateSlideField(slide.id, "btn_text_color", e.target.value)}
+                                  className="w-full border border-[#e0e0e0] rounded px-2 py-1 text-[11px] outline-none font-mono"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="block text-[10px] font-semibold text-[#202223] mb-1">
+                              Slide Duration ({slide.slide_duration}ms)
+                            </label>
+                            <input
+                              type="range"
+                              min="2000"
+                              max="15000"
+                              step="500"
+                              value={slide.slide_duration}
+                              onChange={(e) => updateSlideField(slide.id, "slide_duration", e.target.value)}
+                              className="w-full accent-[#2c6ecb]"
+                            />
+                            <div className="flex justify-between text-[9px] text-[#6d7175] mt-0.5">
+                              <span>2s</span>
+                              <span>8s</span>
+                              <span>15s</span>
+                            </div>
+                          </div>
+                        </div>
+                      </details>
                     </div>
                   ))}
                 </div>

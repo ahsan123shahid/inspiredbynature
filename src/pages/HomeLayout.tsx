@@ -12,8 +12,17 @@ interface Slide {
   title: string;
   subtitle: string;
   image: string;
+  mobile_image: string;
   btn_text: string;
   btn_link: string;
+  overlay_color: string;
+  overlay_opacity: number;
+  title_color: string;
+  subtitle_color: string;
+  content_alignment: "left" | "center" | "right";
+  btn_bg: string;
+  btn_text_color: string;
+  slide_duration: number;
 }
 
 interface CollectionTab {
@@ -120,16 +129,34 @@ export const defaultThemeSettings: ThemeSettings = {
       title: "SATORI 2026",
       subtitle: "STILLNESS & LUXURY",
       image: "banner1.jpg",
+      mobile_image: "",
       btn_text: "LIVE NOW",
       btn_link: "/shop/luxury-collection",
+      overlay_color: "#000000",
+      overlay_opacity: 0.4,
+      title_color: "#ffffff",
+      subtitle_color: "#ffffff",
+      content_alignment: "center",
+      btn_bg: "#ffffff",
+      btn_text_color: "#151515",
+      slide_duration: 5000,
     },
     {
       id: "2",
       title: "FESTIVE EID II 2026",
       subtitle: "NEW ARRIVALS",
       image: "banner.jpg",
+      mobile_image: "",
       btn_text: "SHOP NOW",
       btn_link: "/shop/women",
+      overlay_color: "#000000",
+      overlay_opacity: 0.4,
+      title_color: "#ffffff",
+      subtitle_color: "#ffffff",
+      content_alignment: "center",
+      btn_bg: "#ffffff",
+      btn_text_color: "#151515",
+      slide_duration: 5000,
     },
   ],
   categories_section: {

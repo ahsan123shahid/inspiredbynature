@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ThemeSettings } from "../pages/HomeLayout";
 
@@ -6,12 +6,26 @@ interface BannerProps {
   themeSettings?: ThemeSettings;
 }
 
+const alignmentClasses: Record<string, string> = {
+  left: "text-left items-start",
+  center: "text-center items-center",
+  right: "text-right items-end",
+};
+
 const Banner = ({ themeSettings }: BannerProps) => {
   const slides = themeSettings?.slides || [];
   const [activeIndex, setActiveIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const minSwipeDistance = 50;
 
@@ -47,11 +61,16 @@ const Banner = ({ themeSettings }: BannerProps) => {
 
   useEffect(() => {
     if (slides.length <= 1) return;
-    const interval = setInterval(() => {
+    const current = slides[activeIndex];
+    const duration = current?.slide_duration || 5000;
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
       setActiveIndex((prevIndex) => (prevIndex + 1) % slides.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [slides.length]);
+    }, duration);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [slides.length, activeIndex, slides]);
 
   if (slides.length === 0) {
     return (
@@ -75,15 +94,17 @@ const Banner = ({ themeSettings }: BannerProps) => {
     >
       {slides.map((slide, index) => {
         const isActive = index === activeIndex;
-        const imageUrl = slide.image.startsWith("http") || slide.image.startsWith("/")
-          ? slide.image
-          : `/assets/${slide.image}`;
+        const rawImage = isMobile && slide.mobile_image ? slide.mobile_image : slide.image;
+        const imageUrl = rawImage.startsWith("http") || rawImage.startsWith("/")
+          ? rawImage
+          : `/assets/${rawImage}`;
         const loaded = loadedImages.has(imageUrl);
+        const align = alignmentClasses[slide.content_alignment] || alignmentClasses.center;
 
         return (
           <div
             key={slide.id || index}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out flex flex-col justify-center items-center ${
+            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out flex flex-col justify-center ${align} ${
               isActive ? "opacity-100 z-10" : "opacity-0 z-0"
             }`}
           >
@@ -107,24 +128,32 @@ const Banner = ({ themeSettings }: BannerProps) => {
               <div
                 className="absolute inset-0"
                 style={{
-                  background: `linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.15) 100%)`,
+                  background: `linear-gradient(0deg, ${slide.overlay_color}${hexToAlpha(slide.overlay_opacity)} 0%, ${slide.overlay_color}${hexToAlpha(Math.max(0, slide.overlay_opacity - 0.25))} 100%)`,
                 }}
               />
             </div>
 
-            <div className="relative z-20 px-8 text-center flex flex-col items-center max-w-3xl mx-5 animate-fade-in">
-              {/* Script subhead */}
-              <p className="text-script-lead text-white/90 mb-2">
+            <div className="relative z-20 px-8 flex flex-col max-w-3xl mx-5 animate-fade-in">
+              <p
+                className="text-script-lead mb-2"
+                style={{ color: slide.subtitle_color }}
+              >
                 {slide.subtitle}
               </p>
-              {/* Display hero headline */}
-              <h2 className="text-display-hero text-white">
+              <h2
+                className="text-display-hero"
+                style={{ color: slide.title_color }}
+              >
                 {slide.title}
               </h2>
-              <div className="flex justify-center items-center gap-4 pt-6 flex-col sm:flex-row">
+              <div className="flex justify-start items-center gap-4 pt-6 flex-col sm:flex-row">
                 <Link
                   to={slide.btn_link || "/shop"}
-                  className="bg-white text-ink text-button-label uppercase tracking-tracked font-semibold px-10 py-4 rounded-pill hover:bg-shade-20 transition-all duration-300"
+                  className="text-button-label uppercase tracking-tracked font-semibold px-10 py-4 rounded-pill hover:opacity-80 transition-all duration-300"
+                  style={{
+                    backgroundColor: slide.btn_bg,
+                    color: slide.btn_text_color,
+                  }}
                 >
                   {slide.btn_text || "Shop Now"}
                 </Link>
@@ -151,5 +180,10 @@ const Banner = ({ themeSettings }: BannerProps) => {
     </div>
   );
 };
+
+function hexToAlpha(opacity: number): string {
+  const alpha = Math.round(Math.max(0, Math.min(1, opacity)) * 255);
+  return alpha.toString(16).padStart(2, "0");
+}
 
 export default Banner;
