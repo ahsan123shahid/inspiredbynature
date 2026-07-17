@@ -71,7 +71,7 @@ const Header = ({ logoText, logoImage, logoSize }: HeaderProps) => {
 
             {/* Logo */}
             <Link to="/">
-              <img src={logoSrc} alt={logoText || "INSPIREDBYNATURE"} className="w-auto object-contain" style={{ maxHeight: `min(4rem, ${logoHeight}px)` }} />
+              <img src={logoSrc} alt={logoText || "INSPIREDBYNATURE"} className="w-auto object-contain" style={{ maxHeight: `${logoHeight}px` }} />
             </Link>
 
             {/* Desktop navigation */}
