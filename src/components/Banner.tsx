@@ -74,6 +74,7 @@ const Banner = ({ themeSettings }: BannerProps) => {
 
   if (slides.length === 0) {
     return (
+<<<<<<< HEAD
       <div className="w-full flex flex-col justify-end items-center pb-16 md:pb-24 bg-canvas-cream h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px] xl:h-[650px]">
         <h2 className="text-display-hero text-ink text-center">
           BASICS
