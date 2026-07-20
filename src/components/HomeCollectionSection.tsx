@@ -47,7 +47,7 @@ const HomeCollectionSection = ({ themeSettings }: HomeCollectionSectionProps) =>
     <section className="max-w-screen-2xl mx-auto px-5 sm:px-8 mt-huge">
       <h2 className="section-title mb-6">{title}</h2>
 
-      {tabs.length > 0 && (
+      {tabs.length > 1 && (
         <div className="flex justify-center flex-wrap gap-x-6 gap-y-3 border-b border-hairline pb-3 mb-10 text-nav-label uppercase tracking-tracked text-shade-40">
           {tabs.map((tab, idx) => (
             <button

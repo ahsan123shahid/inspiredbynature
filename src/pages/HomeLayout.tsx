@@ -259,8 +259,8 @@ const HomeLayout = () => {
     // Load SEO settings from localStorage
     const seoStored = localStorage.getItem("inspiredbynature_seo_settings");
     const seo = seoStored ? JSON.parse(seoStored) : {
-      metaTitleTemplate: "{Page Title} | INSPIREDBYNATURE",
-      defaultMetaDescription: "Premium luxury fragrances, eau de parfum, and gift sets inspired by nature. Free shipping nationwide.",
+      metaTitleTemplate: "{Page Title} | GEMINI NANO",
+      defaultMetaDescription: "Premium luxury fragrances, eau de parfum, and gift sets by Gemini Nano. Free shipping nationwide.",
       gaTrackingId: "G-XXXXXXXXXX",
       fbPixelId: "123456789012345",
     };

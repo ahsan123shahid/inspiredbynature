@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { trackFbEvent } from "../utils/fbPixel";
 
 const EASYPAISA_NUMBER = "03015158089";
-const EASYPAISA_NAME = "Inspired By Nature";
+const EASYPAISA_NAME = "Gemini Nano";
 
 const paymentMethods = [
   { id: "credit-card", title: "Credit Card / Debit Card" },
