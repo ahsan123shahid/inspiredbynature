@@ -68,35 +68,6 @@ const SingleProduct = () => {
           currency: "PKR",
           content_type: "product"
         });
-
-        try {
-          const imgRes = await customFetch.get("/product-images");
-          const realImg = imgRes.data.find((img: any) => String(img.pro_id) === String(prod.id));
-          if (realImg) {
-            const gallery = [
-              prod.image,
-              realImg.pro_img2,
-              realImg.pro_img3,
-              realImg.pro_img4,
-              realImg.pro_img5
-            ].filter(Boolean);
-            setAdditionalImages(gallery);
-          } else {
-            setAdditionalImages([
-              prod.image,
-              "perfume 1.png",
-              "perfume 2.png",
-              "banner1.jpg"
-            ]);
-          }
-        } catch {
-          setAdditionalImages([
-            prod.image,
-            "perfume 1.png",
-            "perfume 2.png",
-            "banner1.jpg"
-          ]);
-        }
       } catch (e) {
         console.error(e);
       }
@@ -478,11 +449,7 @@ const SingleProduct = () => {
 
           <div className="border-t border-hairline pt-6 space-y-4">
             <Dropdown dropdownTitle="Description">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante,
-              eget hendrerit massa tristique vel. Curabitur vel luctus justo.
-            </Dropdown>
-            <Dropdown dropdownTitle="Product Details">
-              A long-lasting luxury fragrance crafted with premium botanical ingredients for an unforgettable signature scent.
+              {singleProduct?.description || "No description available."}
             </Dropdown>
             <Dropdown dropdownTitle="Delivery &amp; Return Details">
               Returns accepted within 14 days of delivery. Free shipping nationwide. International orders deliver within 10-15 business days.
