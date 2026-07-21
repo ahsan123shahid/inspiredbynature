@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class ProductImage extends Model
 {
     public $timestamps = false;
-    protected $primaryKey = 'pro_img_id';
+    protected $primaryKey = 'img_id';
 }
