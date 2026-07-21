@@ -115,13 +115,13 @@ export interface ThemeSettings {
 
 export const defaultThemeSettings: ThemeSettings = {
   announcement: {
-    text: "WELCOME TO GEMINI NANO PERFUMES — Free Shipping Nationwide",
+    text: "WELCOME TO INSPIREDBYNATURE — Free Shipping Nationwide",
     bg_color: "#000000",
     text_color: "#ffffff",
     enabled: true,
   },
-  logo_text: "GEMINI NANO",
-  logo_image: "gemini-nano-logo.png",
+  logo_text: "INSPIREDBYNATURE",
+  logo_image: "inspiredbynature-logo.png",
   logo_size: 70,
   slides: [
     {
@@ -143,7 +143,7 @@ export const defaultThemeSettings: ThemeSettings = {
     },
     {
       id: "2",
-      title: "GEMINI NANO PERFUMES",
+      title: "INSPIREDBYNATURE",
       subtitle: "EXPERIENCE CTRINE, KAWKAB AND SCENTIQUE WHITE",
       image: "banner.jpg",
       mobile_image: "",
@@ -202,7 +202,7 @@ export const defaultThemeSettings: ThemeSettings = {
   instagram_gallery: {
     enabled: false,
     title: "Instagram lookbook gallery",
-    hashtag: "#gemininano",
+    hashtag: "#inspiredbynature",
     items: [],
   },
   trust_bar: {
@@ -222,7 +222,7 @@ export const defaultThemeSettings: ThemeSettings = {
   },
   footer: {
     facebook_url: "https://facebook.com",
-    instagram_url: "https://instagram.com/gemininano",
+    instagram_url: "https://instagram.com/inspiredbynature",
     tiktok_url: "https://tiktok.com",
     pinterest_url: "https://pinterest.com",
     youtube_url: "https://youtube.com",
@@ -251,7 +251,7 @@ const HomeLayout = () => {
     // Load SEO settings from localStorage
     const seoStored = localStorage.getItem("inspiredbynature_seo_settings");
     const seo = seoStored ? JSON.parse(seoStored) : {
-      metaTitleTemplate: "{Page Title} | GEMINI NANO",
+      metaTitleTemplate: "{Page Title} | INSPIREDBYNATURE",
       defaultMetaDescription: "Premium luxury fragrances, eau de parfum, and gift sets by Gemini Nano. Free shipping nationwide.",
       gaTrackingId: "G-XXXXXXXXXX",
       fbPixelId: "123456789012345",

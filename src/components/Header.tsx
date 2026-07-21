@@ -29,7 +29,7 @@ interface HeaderProps {
 
 const Header = ({ themeSettings, logoText: propLogoText, logoImage: propLogoImage, logoSize: propLogoSize }: HeaderProps) => {
   const logoText = themeSettings?.logo_text || propLogoText || "GEMINI NANO";
-  const logoImage = themeSettings?.logo_image || propLogoImage || "gemini-nano-logo.png";
+  const logoImage = themeSettings?.logo_image || propLogoImage || "inspiredbynature-logo.png";
   const logoSize = themeSettings?.logo_size || propLogoSize || 70;
   const announcement = themeSettings?.announcement;
 
