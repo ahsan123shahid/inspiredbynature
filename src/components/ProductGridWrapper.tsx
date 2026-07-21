@@ -47,7 +47,8 @@ const ProductGridWrapper = ({
         const colorsList = ["black", "red", "blue", "white", "rose", "green"];
         const sizesList = ["xs", "s", "m", "lg", "xl", "xxl"];
         
-        const hash = p.title.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) + Number(p.id || 0);
+        const titleStr = p.title || "";
+        const hash = titleStr.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) + Number(p.id || 0);
         const pColors = [
           colorsList[hash % colorsList.length],
           colorsList[(hash + 2) % colorsList.length],
@@ -68,7 +69,7 @@ const ProductGridWrapper = ({
       // 1. Filter by Search Query
       if (urlQuery.trim()) {
         processed = processed.filter((product: any) =>
-          product.title.toLowerCase().includes(urlQuery.toLowerCase())
+          (product.title || "").toLowerCase().includes(urlQuery.toLowerCase())
         );
       }
 

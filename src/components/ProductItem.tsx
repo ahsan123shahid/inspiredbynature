@@ -12,6 +12,7 @@ const ProductItem = ({
   price,
   popularity,
   stock,
+  originalPrice,
 }: {
   id: string;
   image: string;
@@ -20,19 +21,18 @@ const ProductItem = ({
   price: number;
   popularity: number;
   stock: number;
+  originalPrice?: number;
 }) => {
   const dispatch = useAppDispatch();
   const { wishlistItems } = useAppSelector((state) => state.wishlist);
   const isWishlisted = wishlistItems.some((item) => item.id === id);
 
-  // Simulate discount for SALE items (50% off for demo)
-  const originalPrice = price * 2;
-  const discountPercent = Math.round((1 - price / originalPrice) * 100);
+  const discountPercent = originalPrice ? Math.round((1 - price / originalPrice) * 100) : 0;
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    dispatch(toggleWishlist({ id, image, title, category: _category, price, popularity, stock }));
+    dispatch(toggleWishlist({ id, image, title, category: _category, price, popularity, stock, originalPrice }));
     if (isWishlisted) {
       toast.error("Removed from wishlist");
     } else {
@@ -63,8 +63,7 @@ const ProductItem = ({
           </div>
         )}
 
-        {/* Discount Badge — coral pill */}
-        {stock > 0 && discountPercent >= 30 && (
+        {originalPrice && stock > 0 && discountPercent >= 30 && (
           <div className="absolute top-3 left-3 z-20 bg-primary text-on-primary text-caption uppercase tracking-tracked font-medium px-3 py-1 rounded-pill">
             {discountPercent}% OFF
           </div>
@@ -89,17 +88,24 @@ const ProductItem = ({
             {title}
           </h3>
         </Link>
-        {/* Price row: strike + current + badge */}
         <div className="flex items-center gap-2 mt-1.5">
-          <span className="text-price-strike text-price-strike line-through">
-            PKR {originalPrice.toLocaleString()}
-          </span>
-          <span className="text-price-current text-ink">
-            PKR {price.toLocaleString()}
-          </span>
-          {stock > 0 && discountPercent >= 30 && (
-            <span className="bg-primary text-on-primary text-caption uppercase tracking-tracked font-medium px-2 py-0.5 rounded-pill">
-              {discountPercent}% OFF
+          {originalPrice ? (
+            <>
+              <span className="text-price-strike text-price-strike line-through">
+                PKR {originalPrice.toLocaleString()}
+              </span>
+              <span className="text-price-current text-ink">
+                PKR {price.toLocaleString()}
+              </span>
+              {stock > 0 && discountPercent >= 30 && (
+                <span className="bg-primary text-on-primary text-caption uppercase tracking-tracked font-medium px-2 py-0.5 rounded-pill">
+                  {discountPercent}% OFF
+                </span>
+              )}
+            </>
+          ) : (
+            <span className="text-price-current text-ink">
+              PKR {price.toLocaleString()}
             </span>
           )}
         </div>

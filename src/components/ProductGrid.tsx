@@ -1,6 +1,6 @@
 import React from "react";
 import ProductItem from "./ProductItem";
-import { nanoid } from "nanoid";
+
 
 interface ProductGridProps {
   products?: Product[];
@@ -20,7 +20,7 @@ const ProductGrid = ({ products, className = "collection-grid" }: ProductGridPro
     <div className={className}>
       {products.map((product: Product) => (
         <ProductItem
-          key={nanoid()}
+          key={product.id}
           id={product.id}
           image={product.image}
           title={product.title}
@@ -28,6 +28,7 @@ const ProductGrid = ({ products, className = "collection-grid" }: ProductGridPro
           price={product.price}
           popularity={product.popularity}
           stock={product.stock}
+          originalPrice={product.originalPrice}
         />
       ))}
     </div>

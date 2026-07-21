@@ -7,7 +7,7 @@ services:
     plan: free
     envVars:
       - key: APP_KEY
-        value: base64:egS+g2OC0U8NaEgM19xPl8+KEpytaxjyhH0dmA8x2Yo=
+        sync: false
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST

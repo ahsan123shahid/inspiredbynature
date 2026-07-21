@@ -225,10 +225,9 @@
         "postalCode": "11080",
         "phone": "06123123132",
         "paymentType": "on",
-        "cardNumber": "12313212",
-        "nameOnCard": "123123",
-        "expirationDate": "123123",
-        "cvc": "12312"
+        "cardNumber": "**** **** **** 1234",
+        "nameOnCard": "Card Holder",
+        "expirationDate": "12/28"
       },
       "products": [
         {
@@ -265,10 +264,9 @@
         "postalCode": "123",
         "phone": "123",
         "paymentType": "on",
-        "cardNumber": "123",
-        "nameOnCard": "123",
-        "expirationDate": "123",
-        "cvc": "123"
+        "cardNumber": "**** **** **** 1234",
+        "nameOnCard": "Card Holder",
+        "expirationDate": "12/28"
       },
       "products": [
         {
@@ -305,10 +303,9 @@
         "postalCode": "11080",
         "phone": "06123123132",
         "paymentType": "on",
-        "cardNumber": "123",
-        "nameOnCard": "123",
-        "expirationDate": "123",
-        "cvc": "123"
+        "cardNumber": "**** **** **** 1234",
+        "nameOnCard": "Card Holder",
+        "expirationDate": "12/28"
       },
       "products": [
         {
@@ -359,10 +356,9 @@
         "postalCode": "11080",
         "phone": "123",
         "paymentType": "on",
-        "cardNumber": "123",
-        "nameOnCard": "123",
-        "expirationDate": "123",
-        "cvc": "123"
+        "cardNumber": "**** **** **** 1234",
+        "nameOnCard": "Card Holder",
+        "expirationDate": "12/28"
       },
       "products": [
         {
@@ -401,10 +397,9 @@
         "postalCode": "11080",
         "phone": "06123123132",
         "paymentType": "on",
-        "cardNumber": "123",
-        "nameOnCard": "123",
-        "expirationDate": "123",
-        "cvc": "123"
+        "cardNumber": "**** **** **** 1234",
+        "nameOnCard": "Card Holder",
+        "expirationDate": "12/28"
       },
       "products": [
         {
@@ -503,10 +498,9 @@
         "postalCode": "11080",
         "phone": "06123123132",
         "paymentType": "on",
-        "cardNumber": "123",
-        "nameOnCard": "321",
-        "expirationDate": "123",
-        "cvc": "321"
+        "cardNumber": "**** **** **** 1234",
+        "nameOnCard": "Card Holder",
+        "expirationDate": "12/28"
       },
       "products": [
         {
@@ -541,10 +535,9 @@
         "postalCode": "11080",
         "phone": "06123123132",
         "paymentType": "on",
-        "cardNumber": "123",
-        "nameOnCard": "321",
-        "expirationDate": "123",
-        "cvc": "321"
+        "cardNumber": "**** **** **** 1234",
+        "nameOnCard": "Card Holder",
+        "expirationDate": "12/28"
       },
       "products": [
         {
@@ -583,10 +576,9 @@
         "postalCode": "1123012",
         "phone": "123123",
         "paymentType": "on",
-        "cardNumber": "123",
-        "nameOnCard": "123",
-        "expirationDate": "123",
-        "cvc": "123"
+        "cardNumber": "**** **** **** 1234",
+        "nameOnCard": "Card Holder",
+        "expirationDate": "12/28"
       },
       "products": [
         {
@@ -617,31 +609,28 @@
       "name": "Aleksandar",
       "lastname": "Kuzmanovic",
       "email": "aleksandarkuzmanovic021@gmail.com",
-      "password": "1233214321",
+      "password": "$2y$12$LJ3m4ys3Lk0TSwHnbfOMeO.RpLv3TgVPmN0g0Yh0Jkl0H0z0D0qS",
       "id": 1
     },
     {
       "name": "Bojan",
       "lastname": "Cesnak",
       "email": "bc22@gmail.com",
-      "password": "123321",
-      "confirmPassword": "123321",
+      "password": "$2y$12$LJ3m4ys3Lk0TSwHnbfOMeO.RpLv3TgVPmN0g0Yh0Jkl0H0z0D0qS",
       "id": 2
     },
     {
       "name": "A",
       "lastname": "A",
       "email": "a@gmail.com",
-      "password": "123321",
-      "confirmPassword": "123321",
+      "password": "$2y$12$LJ3m4ys3Lk0TSwHnbfOMeO.RpLv3TgVPmN0g0Yh0Jkl0H0z0D0qS",
       "id": 3
     },
     {
       "name": "Lebron",
       "lastname": "James",
       "email": "lebronjames@gmail.com",
-      "password": "1233214321",
-      "confirmPassword": "1233214321",
+      "password": "$2y$12$LJ3m4ys3Lk0TSwHnbfOMeO.RpLv3TgVPmN0g0Yh0Jkl0H0z0D0qS",
       "id": 4
     }
   ],

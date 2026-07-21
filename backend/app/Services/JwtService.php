@@ -13,8 +13,10 @@ class JwtService
 
     public function __construct()
     {
-        // Fallback to a static secret if APP_KEY is empty
-        $this->secret = env('JWT_SECRET', env('APP_KEY', 'default-jwt-secret-fallback-key-32-chars-long'));
+        $this->secret = env('JWT_SECRET');
+        if (!$this->secret) {
+            throw new \RuntimeException('JWT_SECRET environment variable is not set.');
+        }
     }
 
     /**
@@ -80,6 +82,12 @@ class JwtService
         }
 
         [$base64UrlHeader, $base64UrlPayload, $base64UrlSignature] = $parts;
+
+        $header = json_decode($this->base64UrlDecode($base64UrlHeader), true);
+        if (!$header || !isset($header['alg']) || $header['alg'] !== 'HS256') {
+            Log::warning('JWT algorithm mismatch or missing.');
+            return null;
+        }
 
         // Verify Signature
         $signature = hash_hmac('sha256', "{$base64UrlHeader}.{$base64UrlPayload}", $this->secret, true);

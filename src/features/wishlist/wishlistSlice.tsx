@@ -4,9 +4,19 @@ type WishlistState = {
   wishlistItems: Product[];
 };
 
-const storedWishlist = localStorage.getItem("inspiredbynature_wishlist");
+const getInitialWishlist = (): Product[] => {
+  try {
+    const stored = localStorage.getItem("inspiredbynature_wishlist");
+    if (!stored) return [];
+    const parsed = JSON.parse(stored);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+
 const initialState: WishlistState = {
-  wishlistItems: storedWishlist ? JSON.parse(storedWishlist) : [],
+  wishlistItems: getInitialWishlist(),
 };
 
 export const wishlistSlice = createSlice({

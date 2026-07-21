@@ -4,10 +4,19 @@ type AuthState = {
   loginStatus: boolean;
 };
 
+const checkInitialLoginStatus = (): boolean => {
+  try {
+    const user = localStorage.getItem("user");
+    if (!user) return false;
+    const parsed = JSON.parse(user);
+    return Boolean(parsed && parsed.id);
+  } catch {
+    return false;
+  }
+};
+
 const initialState: AuthState = {
-  loginStatus: JSON.parse(localStorage.getItem("user") || "{}").id
-    ? true
-    : false,
+  loginStatus: checkInitialLoginStatus(),
 };
 
 export const authSlice = createSlice({

@@ -77,10 +77,10 @@ class ProductController extends Controller
 
             return $this->paginatedResponse($paginatedProducts, 'Products list fetched successfully.');
         } catch (\Throwable $e) {
+            Log::error('ProductController::index failed: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'message' => 'Something went wrong.'
             ], 500);
         }
     }

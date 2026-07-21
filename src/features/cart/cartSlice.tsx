@@ -96,6 +96,16 @@ export const cartSlice = createSlice({
       state.appliedCoupon = null;
       cartSlice.caseReducers.calculateTotalPrice(state);
     },
+    clearCart: (state) => {
+      state.productsInCart = [];
+      state.subtotal = 0;
+      state.appliedCoupon = null;
+      try {
+        localStorage.removeItem("cart");
+      } catch (e) {
+        console.error("Failed to remove cart from localStorage", e);
+      }
+    },
     calculateTotalPrice: (state) => {
       state.subtotal = state.productsInCart.reduce(
         (acc, product) => acc + product.price * product.quantity,
@@ -129,6 +139,7 @@ export const {
   updateProductQuantity,
   applyCoupon,
   removeCoupon,
+  clearCart,
   calculateTotalPrice,
 } = cartSlice.actions;
 

@@ -19,13 +19,17 @@ export const searchAction = async ({ request }: SearchActionRequest) => {
   // converting form data to object for easy access
   const data = Object.fromEntries(formData);
 
-  return redirect(`/search?query=${data?.searchInput || ""}`);
+  return redirect(`/search?query=${encodeURIComponent(data?.searchInput?.toString() || "")}`);
 };
 
 
-export const checkoutAction = async ({request} : CheckoutFormAction) => {
+export const checkoutAction = async ({ request }: CheckoutFormAction) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  await customFetch.post("/orders", data);
-  return redirect('/');
+  try {
+    await customFetch.post("/orders", data);
+    return redirect('/');
+  } catch {
+    return { error: "Failed to place order. Please try again." };
+  }
 }

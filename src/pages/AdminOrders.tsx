@@ -19,8 +19,8 @@ const AdminOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await customFetch.get("/orders");
-      setOrders(res.data.reverse());
+      const data = Array.isArray(res.data) ? res.data : (res.data?.data || []);
+      setOrders([...data].reverse());
     } catch (e) {
       console.error(e);
     }

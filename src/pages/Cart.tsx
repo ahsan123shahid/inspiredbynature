@@ -98,7 +98,7 @@ const Cart = () => {
                         <div className="flex justify-between">
                           <h3 className="text-body-md">
                             <Link
-                              to={`/product/${product.id}`}
+                              to={`/product/${product.productId || product.id}`}
                               className="font-medium text-ink hover:text-shade-50"
                             >
                               {product.title}

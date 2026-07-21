@@ -179,6 +179,7 @@ const SingleProduct = () => {
       dispatch(
         addProductToTheCart({
           id: singleProduct.id + size + color,
+          productId: singleProduct.id,
           image: singleProduct.image,
           title: singleProduct.title,
           category: singleProduct.category,

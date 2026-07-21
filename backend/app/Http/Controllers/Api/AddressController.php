@@ -9,6 +9,7 @@ class AddressController extends Controller
 {
     public function index()
     {
-        return Address::all();
+        $userId = auth()->id();
+        return Address::where('user_id', $userId)->get();
     }
 }

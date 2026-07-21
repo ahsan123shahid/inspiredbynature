@@ -130,7 +130,7 @@ Route::middleware('throttle:api')->group(function () {
     // Order creation is public to support guest checkouts
     Route::post('/orders', [OrderController::class, 'store']);
     Route::post('/webhooks/mollie', [\App\Http\Controllers\Api\MollieWebhookController::class, 'handle']);
-    Route::post('/upload', [\App\Http\Controllers\Api\UploadController::class, 'store']);
+    Route::post('/upload', [\App\Http\Controllers\Api\UploadController::class, 'store'])->middleware('jwt.auth');
 
     // ==========================================
     // 2. AUTHENTICATED USER ROUTES

@@ -1,5 +1,3 @@
-import { nanoid } from "nanoid";
-
 interface ISelectElement {
   id: number;
   value: string;
@@ -18,7 +16,7 @@ const StandardSelectInput = ({
     >
       {selectList &&
         selectList.map((element: ISelectElement) => (
-          <option key={nanoid()} value={element.id}>
+          <option key={element.id} value={element.id}>
             {element.value}
           </option>
         ))}

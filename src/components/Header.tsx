@@ -45,6 +45,7 @@ const Header = ({ themeSettings, logoText: propLogoText, logoImage: propLogoImag
   const [navItems, setNavItems] = useState<Array<{ label: string; path: string; sale?: boolean }>>(defaultNavItems);
   const { wishlistItems } = useAppSelector((state) => state.wishlist);
   const { productsInCart } = useAppSelector((state) => state.cart);
+  const isLoggedIn = useAppSelector((state) => state.auth.loginStatus);
   
   const cartItemsCount = productsInCart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -131,7 +132,7 @@ const Header = ({ themeSettings, logoText: propLogoText, logoImage: propLogoImag
               >
                 <HiOutlineMagnifyingGlass className="text-2xl" />
               </button>
-              <Link to="/login" className="text-ink hover:opacity-60 transition-opacity p-1 hidden sm:inline-block">
+              <Link to={isLoggedIn ? "/user-profile" : "/login"} className="text-ink hover:opacity-60 transition-opacity p-1 hidden sm:inline-block" aria-label="User Account">
                 <HiOutlineUser className="text-2xl" />
               </Link>
               <Link to="/wishlist" className="text-ink hover:opacity-60 transition-opacity p-1 relative hidden sm:inline-block">

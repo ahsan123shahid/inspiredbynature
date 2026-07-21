@@ -22,10 +22,10 @@ const AdminDashboard = () => {
           customFetch.get("/stores"),
         ]);
         
-        const products = productsRes.data;
-        const orders = ordersRes.data;
-        const users = usersRes.data;
-        const shippingVal = (storeRes.data && storeRes.data.length > 0) ? (parseFloat(storeRes.data[0].ShippingFee) || 500) : 500;
+        const products = Array.isArray(productsRes.data) ? productsRes.data : (productsRes.data?.data || []);
+        const orders = Array.isArray(ordersRes.data) ? ordersRes.data : (ordersRes.data?.data || []);
+        const users = Array.isArray(usersRes.data) ? usersRes.data : (usersRes.data?.data || []);
+        const shippingVal = (storeRes.data && Array.isArray(storeRes.data) && storeRes.data.length > 0) ? (parseFloat(storeRes.data[0].ShippingFee) || 500) : 500;
         setStoreShippingFee(shippingVal);
 
         // Calculate Revenue
@@ -39,7 +39,7 @@ const AdminDashboard = () => {
         });
 
         // Recent Orders
-        setRecentOrders(orders.slice(-5).reverse());
+        setRecentOrders([...orders].slice(-5).reverse());
 
         // Low stock alerts (stock < 10)
         const lowStock = products.filter((p: any) => p.stock < 10);

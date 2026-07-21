@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { removeProductFromTheCart, removeCoupon } from "../features/cart/cartSlice";
+import { removeProductFromTheCart, removeCoupon, clearCart, applyCoupon } from "../features/cart/cartSlice";
 import customFetch from "../axios/custom";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -106,10 +106,7 @@ const Checkout = () => {
       );
 
       if (found && found.status === "Active") {
-        dispatch({
-          type: "cart/applyCoupon",
-          payload: { code: found.code, type: found.type, value: found.value }
-        });
+        dispatch(applyCoupon({ code: found.code, type: found.type, value: found.value }));
         toast.success(`Coupon "${found.code}" applied!`);
         setCouponInput("");
       } else {
@@ -288,10 +285,7 @@ const Checkout = () => {
           contents: productsInCart.map(p => ({ id: p.id, quantity: p.quantity, price: p.price }))
         });
 
-        productsInCart.forEach((p) => {
-          dispatch(removeProductFromTheCart({ id: p.id }));
-        });
-        dispatch(removeCoupon());
+        dispatch(clearCart());
         navigate("/order-confirmation");
       } else {
         toast.error("Payment failed. Please try another method.");
