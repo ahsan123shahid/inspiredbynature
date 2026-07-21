@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
+import customFetch from "../axios/custom";
 import {
   HiOutlineHome, HiOutlineShoppingBag, HiOutlineCube, HiOutlineUsers,
   HiOutlineTag, HiOutlineSquares2X2, HiOutlineGlobeAlt,
@@ -48,6 +49,7 @@ const Admin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState<{ email?: string; name?: string } | null>(null);
+  const [storeName, setStoreName] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(
     location.pathname.startsWith("/admin/products") ||
@@ -86,6 +88,13 @@ const Admin = () => {
     }
   }, [navigate]);
 
+  useEffect(() => {
+    customFetch.get("/stores").then((res) => {
+      const data = Array.isArray(res.data) ? res.data[0] : res.data;
+      if (data?.StoreName) setStoreName(data.StoreName);
+    }).catch(() => {});
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
@@ -118,7 +127,7 @@ const Admin = () => {
       `}>
         <div className="flex items-center justify-between px-5 h-14 border-b border-[#e4e4e7]">
           <Link to="/admin" className="text-xs font-bold tracking-[0.2em] uppercase text-[#000000]">
-            INSPIREDBYNATURE
+            {storeName || "Dashboard"}
           </Link>
           <button className="lg:hidden text-[#52525b]" onClick={() => setSidebarOpen(false)}>
             <HiXMark className="text-lg" />
@@ -363,10 +372,10 @@ const Admin = () => {
         <div className="border-t border-[#e4e4e7] p-4 bg-white mt-auto">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-[#000000] flex items-center justify-center text-white text-xs font-semibold">
-              {(user?.name?.[0] || user?.email?.[0] || "A").toUpperCase()}
+              {(user?.name?.[0] || user?.email?.[0] || "").toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-[#000000] truncate">{user?.name || "Admin"}</p>
+              <p className="text-xs font-bold text-[#000000] truncate">{user?.name || user?.email || ""}</p>
               <p className="text-[10px] text-[#52525b] truncate">{user?.email}</p>
             </div>
             <button onClick={handleLogout} className="text-[#52525b] hover:text-[#d72c0d] transition-colors" title="Logout">
@@ -387,7 +396,7 @@ const Admin = () => {
                   <HiBars3 className="text-xl" />
                 </button>
               </div>
-              <span className="text-xs text-[#52525b] font-semibold">{isEditPage ? "Edit product" : "Unsaved product"}</span>
+              <span className="text-xs text-[#52525b] font-semibold">{isEditPage ? "Edit" : "New"}</span>
               <div className="flex items-center gap-2">
                 <button onClick={() => navigate("/admin/products")} className="px-5 py-2 text-[10px] uppercase font-bold text-[#000000] border border-[#000000] rounded-full hover:bg-[#fbfbf5] transition-all">
                   Discard
@@ -404,7 +413,7 @@ const Admin = () => {
                   <HiBars3 className="text-xl" />
                 </button>
                 <div className="hidden sm:flex items-center gap-2 text-xs text-[#a1a1aa] font-medium tracking-wide">
-                  <span>Home</span>
+                  <span>{storeName || "Home"}</span>
                   <span>/</span>
                   <span className="text-[#000000] font-semibold capitalize">
                     {location.pathname === "/admin" ? "Dashboard" : location.pathname.split("/").pop()}
