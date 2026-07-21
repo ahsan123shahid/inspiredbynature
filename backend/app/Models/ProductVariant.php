@@ -10,8 +10,6 @@ class ProductVariant extends Model
 {
     use SoftDeletes;
 
-    protected $guarded = [];
-
     /**
      * Relationship with parent Product
      */

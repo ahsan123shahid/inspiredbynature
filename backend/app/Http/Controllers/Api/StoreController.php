@@ -10,12 +10,14 @@ class StoreController extends Controller
 {
     public function index()
     {
-        return Store::all();
+        return Store::all()->map(function ($store) {
+            return $this->sanitize($store);
+        });
     }
 
     public function show(Store $store)
     {
-        return $store;
+        return $this->sanitize($store);
     }
 
     public function update(Request $request, Store $store)
@@ -32,5 +34,18 @@ class StoreController extends Controller
             return $store;
         }
         return Store::create($request->all());
+    }
+
+    private function sanitize(Store $store): Store
+    {
+        $store->makeHidden([
+            'fb_access_token',
+            'fb_ad_account',
+            'fb_business_manager',
+            'fb_pixel_id',
+            'fb_page',
+            'fb_data_sharing',
+        ]);
+        return $store;
     }
 }

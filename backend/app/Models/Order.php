@@ -18,8 +18,6 @@ class Order extends Model
     const STATUS_CANCELLED = 'Cancelled';
     const STATUS_REFUNDED = 'Refunded';
 
-    protected $guarded = [];
-
     protected $casts = [
         'data' => 'array',
         'products' => 'array',

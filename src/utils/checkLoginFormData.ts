@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 export const checkLoginFormData = (data: {
   [k: string]: FormDataEntryValue;
 }) => {
-    if(data?.email === "" || data?.password === "") {
+    if(!data?.email?.toString().trim() || !data?.password?.toString().trim()) {
         toast.error("Please fill in all fields");
         return false;
     }

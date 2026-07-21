@@ -29,7 +29,7 @@ const SidebarMenu = ({
   const navigate = useNavigate();
 
   const logout = () => {
-    toast.error("Logged out successfully");
+    toast.success("Logged out successfully");
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     localStorage.removeItem("meta_connected");

@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class RefreshToken extends Model
 {
-    protected $guarded = [];
-
     protected $casts = [
         'expires_at' => 'datetime',
         'is_revoked' => 'boolean',

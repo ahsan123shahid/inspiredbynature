@@ -29,6 +29,22 @@ class MollieWebhookController extends Controller
      */
     public function handle(Request $request)
     {
+        $allowedIps = ['185.123.0.0/24', '185.124.0.0/24', '87.233.0.0/20', '80.69.0.0/16'];
+        $requestIp = $request->ip();
+
+        $isAllowed = false;
+        foreach ($allowedIps as $cidr) {
+            if ($this->ipInRange($requestIp, $cidr)) {
+                $isAllowed = true;
+                break;
+            }
+        }
+
+        if (!$isAllowed && !app()->environment('local')) {
+            Log::warning("Mollie webhook rejected from untrusted IP: {$requestIp}");
+            return response()->json(['error' => 'Forbidden'], 403);
+        }
+
         $paymentId = $request->input('id');
 
         if (!$paymentId) {
@@ -73,7 +89,18 @@ class MollieWebhookController extends Controller
                     // Full refund
                     if ($order->orderStatus !== Order::STATUS_REFUNDED) {
                         $order->transitionTo(Order::STATUS_REFUNDED, null, "Full refund processed via Mollie. Refunded amount: {$amountRefunded} {$payment->amount->currency}.");
-                    }
+    private function ipInRange(string $ip, string $cidr): bool
+    {
+        [$subnet, $mask] = explode('/', $cidr);
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && filter_var($subnet, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            $ipLong = ip2long($ip);
+            $subnetLong = ip2long($subnet);
+            $maskLong = -1 << (32 - (int)$mask);
+            return ($ipLong & $maskLong) === ($subnetLong & $maskLong);
+        }
+        return false;
+    }
+}
                 } else {
                     // Partial refund: Log in audit trail but keep order active (or custom state)
                     Log::info("Partial refund processed for Order #{$orderId}. Refunded: {$amountRefunded} / Total: {$amountTotal}");

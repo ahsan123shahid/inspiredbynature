@@ -94,11 +94,6 @@ Route::middleware('throttle:api')->group(function () {
         return response()->json(\Illuminate\Support\Facades\DB::table('apps')->orderBy('id', 'asc')->get());
     });
 
-    // Coupons access for validation during guest checkout
-    Route::get('/db-coupons', function () {
-        return response()->json(\Illuminate\Support\Facades\DB::table('coupons')->get());
-    });
-
     Route::post('/coupons/validate', function (\Illuminate\Http\Request $request) {
         $request->validate([
             'code' => 'required|string',
@@ -114,7 +109,7 @@ Route::middleware('throttle:api')->group(function () {
         if (!$coupon->isValidFor($subtotal)) {
             return response()->json([
                 'valid' => false, 
-                'message' => 'Coupon is expired, inactive, or subtotal is below $' . $coupon->min_order_value
+                'message' => 'Coupon is expired or inactive for this subtotal.'
             ], 422);
         }
         
@@ -387,6 +382,10 @@ Route::middleware('throttle:api')->group(function () {
                 Log::error('Migration v2 failed: ' . $e->getMessage());
                 return response()->json(['status' => 'error', 'message' => 'Migration failed.']);
             }
+        });
+
+        Route::get('/db-coupons', function () {
+            return response()->json(\Illuminate\Support\Facades\DB::table('coupons')->orderBy('id', 'asc')->get());
         });
 
         Route::post('/db-coupons', function (\Illuminate\Http\Request $request) {

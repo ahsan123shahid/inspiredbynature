@@ -9,8 +9,6 @@ class Product extends Model
 {
     use SoftDeletes;
 
-    protected $guarded = [];
-
     protected $appends = ['category'];
 
     public function categoryRelation()
