@@ -133,13 +133,15 @@ class ProductController extends Controller
         // Save nested Gallery Images relation
         if ($request->has('additional_images')) {
             $imagesArray = $request->input('additional_images', []);
-            $imagesData = [
-                'pro_img2' => $imagesArray[0] ?? null,
-                'pro_img3' => $imagesArray[1] ?? null,
-                'pro_img4' => $imagesArray[2] ?? null,
-                'pro_img5' => $imagesArray[3] ?? null,
-            ];
-            $product->additionalImages()->updateOrCreate(['pro_id' => $product->id], $imagesData);
+            if (count(array_filter($imagesArray)) > 0) {
+                $imagesData = [
+                    'pro_img2' => $imagesArray[0] ?? null,
+                    'pro_img3' => $imagesArray[1] ?? null,
+                    'pro_img4' => $imagesArray[2] ?? null,
+                    'pro_img5' => $imagesArray[3] ?? null,
+                ];
+                $product->additionalImages()->updateOrCreate(['pro_id' => $product->id], $imagesData);
+            }
         }
 
         $this->clearProductCache(); // Cache bust
@@ -207,13 +209,15 @@ class ProductController extends Controller
         // Save nested Gallery Images relation
         if ($request->has('additional_images')) {
             $imagesArray = $request->input('additional_images', []);
-            $imagesData = [
-                'pro_img2' => $imagesArray[0] ?? null,
-                'pro_img3' => $imagesArray[1] ?? null,
-                'pro_img4' => $imagesArray[2] ?? null,
-                'pro_img5' => $imagesArray[3] ?? null,
-            ];
-            $product->additionalImages()->updateOrCreate(['pro_id' => $product->id], $imagesData);
+            if (count(array_filter($imagesArray)) > 0) {
+                $imagesData = [
+                    'pro_img2' => $imagesArray[0] ?? null,
+                    'pro_img3' => $imagesArray[1] ?? null,
+                    'pro_img4' => $imagesArray[2] ?? null,
+                    'pro_img5' => $imagesArray[3] ?? null,
+                ];
+                $product->additionalImages()->updateOrCreate(['pro_id' => $product->id], $imagesData);
+            }
         }
 
         $this->clearProductCache(); // Cache bust
