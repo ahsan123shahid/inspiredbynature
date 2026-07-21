@@ -87,7 +87,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $input = $request->except(['collection_ids', 'colors', 'sizes', 'additional_images']);
+        $input = $request->except(['collection_ids', 'colors', 'sizes', 'additional_images', 'tags']);
         
         if (isset($input['category_id'])) {
             $cat = DB::table('categories')->where('cat_id', $input['category_id'])->first();
@@ -159,7 +159,7 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $input = $request->except(['collection_ids', 'colors', 'sizes', 'additional_images']);
+        $input = $request->except(['collection_ids', 'colors', 'sizes', 'additional_images', 'tags']);
         
         if (isset($input['category_id'])) {
             $cat = DB::table('categories')->where('cat_id', $input['category_id'])->first();
