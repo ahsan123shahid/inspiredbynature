@@ -13,10 +13,11 @@ class JwtService
 
     public function __construct()
     {
-        $this->secret = env('JWT_SECRET');
-        if (!$this->secret) {
+        $secret = config('services.jwt.secret');
+        if (!$secret) {
             throw new \RuntimeException('JWT_SECRET environment variable is not set.');
         }
+        $this->secret = $secret;
     }
 
     /**

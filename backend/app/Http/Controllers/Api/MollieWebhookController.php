@@ -40,7 +40,7 @@ class MollieWebhookController extends Controller
             }
         }
 
-        if (!$isAllowed && !app()->environment('local')) {
+        if (!$isAllowed && !app()->environment('local', 'testing')) {
             Log::warning("Mollie webhook rejected from untrusted IP: {$requestIp}");
             return response()->json(['error' => 'Forbidden'], 403);
         }
@@ -89,18 +89,7 @@ class MollieWebhookController extends Controller
                     // Full refund
                     if ($order->orderStatus !== Order::STATUS_REFUNDED) {
                         $order->transitionTo(Order::STATUS_REFUNDED, null, "Full refund processed via Mollie. Refunded amount: {$amountRefunded} {$payment->amount->currency}.");
-    private function ipInRange(string $ip, string $cidr): bool
-    {
-        [$subnet, $mask] = explode('/', $cidr);
-        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && filter_var($subnet, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-            $ipLong = ip2long($ip);
-            $subnetLong = ip2long($subnet);
-            $maskLong = -1 << (32 - (int)$mask);
-            return ($ipLong & $maskLong) === ($subnetLong & $maskLong);
-        }
-        return false;
-    }
-}
+                    }
                 } else {
                     // Partial refund: Log in audit trail but keep order active (or custom state)
                     Log::info("Partial refund processed for Order #{$orderId}. Refunded: {$amountRefunded} / Total: {$amountTotal}");
@@ -121,5 +110,17 @@ class MollieWebhookController extends Controller
             Log::error("Mollie webhook handling failed for payment {$paymentId}: " . $e->getMessage());
             return response()->json(['error' => 'Webhook processing error'], 500);
         }
+    }
+
+    private function ipInRange(string $ip, string $cidr): bool
+    {
+        [$subnet, $mask] = explode('/', $cidr);
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && filter_var($subnet, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            $ipLong = ip2long($ip);
+            $subnetLong = ip2long($subnet);
+            $maskLong = -1 << (32 - (int)$mask);
+            return ($ipLong & $maskLong) === ($subnetLong & $maskLong);
+        }
+        return false;
     }
 }

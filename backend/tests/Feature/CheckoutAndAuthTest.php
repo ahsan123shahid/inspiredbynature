@@ -129,12 +129,12 @@ class CheckoutAndAuthTest extends TestCase
         $paymentMock->metadata = (object)['order_id' => $order->id];
 
         if (class_exists(\Mollie\Laravel\Facades\Mollie::class)) {
-            Mollie::shouldReceive('api->payments->get')
+            Mollie::shouldReceive('payments->get')
                 ->with('tr_testpayment')
                 ->andReturn($paymentMock);
         } else {
             $mollieFacadeMock = \Mockery::mock('alias:Mollie\Laravel\Facades\Mollie');
-            $mollieFacadeMock->shouldReceive('api->payments->get')
+            $mollieFacadeMock->shouldReceive('payments->get')
                 ->with('tr_testpayment')
                 ->andReturn($paymentMock);
         }
