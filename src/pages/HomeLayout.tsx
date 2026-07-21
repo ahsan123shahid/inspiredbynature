@@ -232,7 +232,7 @@ export const defaultThemeSettings: ThemeSettings = {
 };
 
 const HomeLayout = () => {
-  const [settings, setSettings] = useState<ThemeSettings>(defaultThemeSettings);
+  const [settings, setSettings] = useState<ThemeSettings | null>(null);
   const location = useLocation();
   const [flyingItems, setFlyingItems] = useState<Array<{ id: number; image: string; startX: number; startY: number }>>([]);
 
@@ -380,6 +380,21 @@ const HomeLayout = () => {
     };
     fetchSettings();
   }, []);
+
+  if (!settings) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        <div style={{
+          width: 48, height: 48,
+          border: '3px solid #e5e5e5',
+          borderTopColor: '#8b7d6b',
+          borderRadius: '50%',
+          animation: 'spin 0.8s linear infinite',
+        }} />
+      </div>
+    );
+  }
 
   const wa = settings.whatsapp;
   const whatsappUrl = `https://wa.me/${wa.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
