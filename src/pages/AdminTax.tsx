@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import customFetch from "../axios/custom";
 import toast from "react-hot-toast";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 interface Tax {
   id?: string;
@@ -49,7 +50,7 @@ const AdminTax = () => {
     return (
       <div className="p-4 lg:p-6">
         <h1 className="text-xl font-semibold text-[#202223] mb-6">Tax Settings</h1>
-        <p className="text-sm text-[#6d7175]">Loading...</p>
+        <LoadingSpinner className="mt-10" />
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import customFetch from "../axios/custom";
 import toast from "react-hot-toast";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 interface Store {
   id?: string;
@@ -23,15 +24,8 @@ interface Store {
   FreeShippingThreshold: string;
 }
 
-const defaultStore: Store = {
-  StoreName: "", StoreEmail: "", SenderEmail: "", StoreIndustry: "",
-  LegalName: "", Phone: "", Streets: "", Apartment: "", City: "",
-  ZipCode: "", Country: "", TimeZone: "", UnitSystem: "", WeightUnit: "", Currency: "",
-  ShippingFee: "500", FreeShippingThreshold: "0",
-};
-
 const AdminSettings = () => {
-  const [form, setForm] = useState<Store>(defaultStore);
+  const [form, setForm] = useState<Store | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -74,11 +68,11 @@ const AdminSettings = () => {
     } catch { toast.error("Something went wrong"); }
   };
 
-  if (loading) {
+  if (loading || !form) {
     return (
       <div className="p-4 lg:p-6">
         <h1 className="text-xl font-semibold text-[#202223] mb-6">Settings</h1>
-        <p className="text-sm text-[#6d7175]">Loading...</p>
+        <LoadingSpinner className="mt-10" />
       </div>
     );
   }

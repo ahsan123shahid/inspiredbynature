@@ -7,6 +7,7 @@ import {
 import { FaFacebook } from "react-icons/fa";
 import customFetch from "../axios/custom";
 import toast from "react-hot-toast";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 interface PreferenceSettings {
   metaTitleTemplate: string;
@@ -29,7 +30,7 @@ const defaultSEO: PreferenceSettings = {
 };
 
 const AdminPreferences = () => {
-  const [settings, setSettings] = useState<PreferenceSettings>(defaultSEO);
+  const [settings, setSettings] = useState<PreferenceSettings | null>(null);
   const [storeId, setStoreId] = useState<string>("1");
   const [loading, setLoading] = useState(true);
   const [showSetupModal, setShowSetupModal] = useState(false);
@@ -100,15 +101,17 @@ const AdminPreferences = () => {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleSave(settings);
+    if (settings) handleSave(settings);
   };
 
   const handleOpenSetup = () => {
+    if (!settings) return;
     setTempPixelId(settings.fbPixelId);
     setShowSetupModal(true);
   };
 
   const handleSavePixelId = () => {
+    if (!settings) return;
     if (!tempPixelId.trim()) {
       toast.error("Please enter a valid Facebook Pixel ID.");
       return;
@@ -119,6 +122,7 @@ const AdminPreferences = () => {
   };
 
   const handleDisconnectPixel = () => {
+    if (!settings) return;
     if (window.confirm("Are you sure you want to disconnect Facebook Pixel tracking?")) {
       const updated = { ...settings, fbPixelId: "" };
       handleSave(updated);
@@ -127,11 +131,11 @@ const AdminPreferences = () => {
     }
   };
 
-  if (loading) {
+  if (loading || !settings) {
     return (
       <div className="p-4 lg:p-6">
         <h1 className="text-xl font-semibold text-[#202223] mb-6">Preferences</h1>
-        <p className="text-sm text-gray-500">Loading settings...</p>
+        <LoadingSpinner className="mt-10" />
       </div>
     );
   }

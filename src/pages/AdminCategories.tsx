@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import customFetch from "../axios/custom";
 import toast from "react-hot-toast";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { HiPencilSquare, HiTrash, HiPlus, HiXMark, HiOutlinePhoto, HiOutlineMagnifyingGlass, HiArrowUpTray, HiCheck } from "react-icons/hi2";
 import ConfirmModal from "../components/ConfirmModal";
 
@@ -324,7 +325,7 @@ const AdminCategories = () => {
         )}
 
         {loading ? (
-          <div className="text-center py-12 text-[#6d7175] text-sm">Loading categories...</div>
+          <div className="py-12"><LoadingSpinner /></div>
         ) : error ? (
           <div className="text-center py-12">
             <p className="text-[#d72c0d] text-sm mb-3">{error}</p>

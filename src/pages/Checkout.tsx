@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { removeProductFromTheCart, removeCoupon, clearCart, applyCoupon } from "../features/cart/cartSlice";
+import { removeCoupon, clearCart, applyCoupon } from "../features/cart/cartSlice";
 import customFetch from "../axios/custom";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
