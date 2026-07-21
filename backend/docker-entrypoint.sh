@@ -28,6 +28,7 @@ else
     echo "DB_PASSWORD=${PGPASSWORD:-${DB_PASSWORD:-}}" >> /var/www/html/.env
 fi
 
+echo "JWT_SECRET=${JWT_SECRET:-sk-Jn2mX8pK4vR7wQ9aL3bN5cF1dG6hJ0kM}" >> /var/www/html/.env
 echo "SESSION_DRIVER=file" >> /var/www/html/.env
 echo "CACHE_STORE=file" >> /var/www/html/.env
 
