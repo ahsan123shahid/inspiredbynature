@@ -49,8 +49,8 @@ const SingleProduct = () => {
   const isWishlisted = singleProduct ? wishlistItems.some((item) => item.id === singleProduct.id) : false;
   const isOutOfStock = singleProduct ? Number(singleProduct.stock) <= 0 : false;
 
-  const originalPrice = singleProduct ? singleProduct.price * 2 : 0;
-  const discountPercent = singleProduct ? Math.round((1 - singleProduct.price / originalPrice) * 100) : 0;
+  const originalPrice = singleProduct?.originalPrice || 0;
+  const discountPercent = originalPrice > 0 ? Math.round((1 - Number(singleProduct!.price) / originalPrice) * 100) : 0;
 
   useEffect(() => {
     const fetchSingleProduct = async () => {
@@ -106,11 +106,7 @@ const SingleProduct = () => {
       if (relColors.color5) colorsList.push(relColors.color5);
       if (relColors.color6) colorsList.push(relColors.color6);
     }
-    const finalColors = colorsList.filter(Boolean).length > 0 ? colorsList.filter(Boolean) : ["black", "red", "blue", "white", "rose", "green"];
-    setAvailableColors(finalColors);
-    if (!finalColors.includes(color)) {
-      setColor(finalColors[0]);
-    }
+    setAvailableColors(colorsList.filter(Boolean));
 
     const sizesList: string[] = [];
     const relSizes = singleProduct.sizes as any;
@@ -122,11 +118,7 @@ const SingleProduct = () => {
       if (relSizes.size5) sizesList.push(relSizes.size5);
       if (relSizes.size6) sizesList.push(relSizes.size6);
     }
-    const finalSizes = sizesList.filter(Boolean).length > 0 ? sizesList.filter(Boolean) : ["XS", "S", "M", "L", "XL", "XXL"];
-    setAvailableSizes(finalSizes);
-    if (!finalSizes.includes(size)) {
-      setSize(finalSizes[0]);
-    }
+    setAvailableSizes(sizesList.filter(Boolean));
 
     const gallery = [singleProduct.image];
     const relImg = (singleProduct.additional_images || (singleProduct as any).additionalImages) as any;
@@ -232,7 +224,7 @@ const SingleProduct = () => {
     return false;
   };
 
-  const avgRating = reviews.length > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1) : "5.0";
+  const avgRating = reviews.length > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1) : null;
 
   // In-stock indicator
   const inStock = singleProduct && Number(singleProduct.stock) > 0;
@@ -340,9 +332,11 @@ const SingleProduct = () => {
             </div>
             {/* Price row: strike + current + badge */}
             <div className="flex items-center gap-2 mt-4">
-              <span className="text-price-strike text-price-strike line-through">
-                PKR {originalPrice.toLocaleString()}
-              </span>
+              {originalPrice > 0 && (
+                <span className="text-price-strike text-price-strike line-through">
+                  PKR {originalPrice.toLocaleString()}
+                </span>
+              )}
               <span className="text-price-current text-ink">
                 PKR {singleProduct?.price.toLocaleString()}
               </span>
@@ -358,7 +352,7 @@ const SingleProduct = () => {
             )}
           </div>
 
-          {/* Color Selection Swatches */}
+          {availableColors.length > 0 && (
           <div className="space-y-3">
             <h4 className="text-caption uppercase tracking-tracked text-shade-50">
               Color: <span className="text-ink uppercase font-semibold">{color}</span>
@@ -384,12 +378,12 @@ const SingleProduct = () => {
               })}
             </div>
           </div>
+          )}
 
-          {/* Size Selection Pills */}
+          {availableSizes.length > 0 && (
           <div className="space-y-3">
-            <div className="flex justify-between text-caption uppercase tracking-tracked text-shade-50">
+            <div className="flex text-caption uppercase tracking-tracked text-shade-50">
               <span>Size: <span className="text-ink font-semibold">{size}</span></span>
-              <span className="underline cursor-pointer hover:text-ink">Fragrance Guide</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {availableSizes.map((sz) => {
@@ -414,6 +408,7 @@ const SingleProduct = () => {
               })}
             </div>
           </div>
+          )}
 
           {/* Quantity selector */}
           <div className="space-y-3">
@@ -467,13 +462,10 @@ const SingleProduct = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-4 bg-canvas-cream border border-hairline p-6 rounded-md h-fit">
             <div className="text-center pb-6 border-b border-hairline mb-6">
-              <p className="text-5xl font-light font-script text-ink mb-2">{avgRating}</p>
-              <div className="flex justify-center text-amber-500 mb-1">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <HiStar key={s} className="w-5 h-5 fill-current" />
-                ))}
-              </div>
-              <p className="text-caption text-shade-50 tracking-tracked-wide">Based on {reviews.length} reviews</p>
+              <p className="text-5xl font-light font-script text-ink mb-2">{avgRating || "—"}</p>
+              <p className="text-caption text-shade-50 tracking-tracked-wide">
+                {reviews.length > 0 ? `Based on ${reviews.length} reviews` : "No reviews yet"}
+              </p>
             </div>
 
             <div className="space-y-2.5">
