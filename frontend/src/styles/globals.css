@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+@layer base {
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-ink text-on-primary font-semibold text-sm uppercase tracking-wider px-8 py-4 rounded-pill hover:bg-shade-60 transition-colors;
+  }
+  .btn-outline {
+    @apply bg-canvas text-ink font-semibold text-sm uppercase tracking-wider px-7 py-3.5 rounded-pill border border-ink hover:bg-shade-20 transition-colors;
+  }
+  .btn-stepper {
+    @apply bg-shade-20 text-ink rounded-sm px-3 py-2 text-sm;
+  }
+  .badge-discount {
+    @apply bg-primary text-on-primary text-xs rounded-pill px-2.5 py-1;
+  }
+  .badge-neutral {
+    @apply bg-shade-20 text-ink text-xs rounded-pill px-2.5 py-1;
+  }
+  .input-field {
+    @apply w-full border border-hairline rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-ink transition-colors;
+  }
+  .section-title {
+    @apply text-3xl font-bold text-center;
+  }
+  .nav-label {
+    @apply text-xs font-medium uppercase tracking-wider;
+  }
+}
