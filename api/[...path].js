@@ -43,7 +43,16 @@ export default async function handler(req, res) {
   }
 
   const db = loadDb();
-  const segments = (req.query.path || []).filter(Boolean);
+  let segments = [];
+  if (Array.isArray(req.query.path)) {
+    segments = req.query.path;
+  } else if (typeof req.query.path === "string") {
+    segments = req.query.path.split("/").filter(Boolean);
+  } else {
+    const urlPath = (req.url || "").split("?")[0].replace(/^\/api\/?/, "");
+    segments = urlPath.split("/").filter(Boolean);
+  }
+
   const resource = segments[0];
   const id = segments[1];
 

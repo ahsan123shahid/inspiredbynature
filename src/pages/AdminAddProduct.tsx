@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import customFetch from "../axios/custom";
 import toast from "react-hot-toast";
+import localDb from "../data/db.json";
 import {
   HiOutlineChevronDown, HiOutlineCalendarDays, HiOutlineGlobeAlt,
   HiOutlinePhoto, HiArrowUpTray, HiXMark, HiCheck, HiOutlineMagnifyingGlass,
@@ -111,13 +112,23 @@ const AdminAddProduct = () => {
 
     if (!id) return;
     const fetchProduct = async () => {
+      let p: any = null;
       try {
         const res = await customFetch.get(`/products/${id}`);
-        const p = res.data;
+        p = res.data;
+      } catch (e) {
+        console.error("API fetch failed, checking local database...", e);
+      }
+
+      if (!p || !p.title) {
+        p = (localDb.products as any[]).find((x) => String(x.id) === String(id));
+      }
+
+      if (p) {
         setTitle(p.title || "");
         setDescription(p.description || "");
-        setSelectedCatId(p.category_id ? String(p.category_id) : "");
-        setSelectedSubcatId(p.subcategory_id ? String(p.subcategory_id) : "");
+        setSelectedCatId(p.category_id ? String(p.category_id) : p.category ? String(p.category) : "");
+        setSelectedSubcatId(p.subcategory_id ? String(p.subcategory_id) : p.collection ? String(p.collection) : "");
         setPrice(String(p.price ?? ""));
         setStock(String(p.stock ?? ""));
         setUploadedImage(p.image || "");
@@ -153,14 +164,19 @@ const AdminAddProduct = () => {
         const extraImgs = ["", "", "", ""];
         const imgRel = p.additional_images || p.additionalImages;
         if (imgRel) {
-          if (imgRel.pro_img2) extraImgs[0] = imgRel.pro_img2;
-          if (imgRel.pro_img3) extraImgs[1] = imgRel.pro_img3;
-          if (imgRel.pro_img4) extraImgs[2] = imgRel.pro_img4;
-          if (imgRel.pro_img5) extraImgs[3] = imgRel.pro_img5;
+          if (Array.isArray(imgRel)) {
+            imgRel.forEach((img: string, i: number) => {
+              if (i < 4) extraImgs[i] = img;
+            });
+          } else {
+            if (imgRel.pro_img2) extraImgs[0] = imgRel.pro_img2;
+            if (imgRel.pro_img3) extraImgs[1] = imgRel.pro_img3;
+            if (imgRel.pro_img4) extraImgs[2] = imgRel.pro_img4;
+            if (imgRel.pro_img5) extraImgs[3] = imgRel.pro_img5;
+          }
         }
         setExtraImages(extraImgs);
-
-      } catch {
+      } else {
         toast.error("Failed to load product");
         navigate("/admin/products");
       }

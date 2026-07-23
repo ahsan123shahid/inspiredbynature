@@ -6,6 +6,7 @@ import { toggleWishlist } from "../features/wishlist/wishlistSlice";
 import { Dropdown, ProductItem, QuantityInput } from "../components";
 import customFetch from "../axios/custom";
 import toast from "react-hot-toast";
+import localDb from "../data/db.json";
 import { trackFbEvent } from "../utils/fbPixel";
 import { HiHeart, HiOutlineHeart, HiStar, HiCheckCircle } from "react-icons/hi2";
 import WithNumberInputWrapper from "../utils/withNumberInputWrapper";
@@ -54,9 +55,19 @@ const SingleProduct = () => {
 
   useEffect(() => {
     const fetchSingleProduct = async () => {
+      let prod: any = null;
       try {
         const response = await customFetch.get(`/products/${params.id}`);
-        const prod = response.data;
+        prod = response.data;
+      } catch (e) {
+        console.error("API fetch single product failed, checking local database...", e);
+      }
+
+      if (!prod || !prod.title) {
+        prod = (localDb.products as any[]).find((x) => String(x.id) === String(params.id));
+      }
+
+      if (prod) {
         setSingleProduct(prod);
         setActiveImage(prod.image);
 
@@ -68,8 +79,6 @@ const SingleProduct = () => {
           currency: "PKR",
           content_type: "product"
         });
-      } catch (e) {
-        console.error(e);
       }
     };
 
