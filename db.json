@@ -3,30 +3,26 @@
     {
       "id": "1",
       "cat_title": "PERFUMES",
-      "cat_img": "perfume_1_1000420861.jpeg",
-      "created_at": null,
-      "updated_at": null
+      "handle": "perfumes",
+      "cat_img": "perfume_1_1000420861.jpeg"
     },
     {
       "id": "2",
-      "cat_title": "BAKHOOR",
-      "cat_img": "perfume_10_1000420870.jpeg",
-      "created_at": null,
-      "updated_at": null
+      "cat_title": "OILS (ATTAR)",
+      "handle": "oils",
+      "cat_img": "perfume_7_1000420867.jpeg"
     },
     {
       "id": "3",
-      "cat_title": "OILS",
-      "cat_img": "perfume_7_1000420867.jpeg",
-      "created_at": null,
-      "updated_at": null
+      "cat_title": "BAKHOOR",
+      "handle": "bakhoor",
+      "cat_img": "perfume_10_1000420870.jpeg"
     },
     {
       "id": "4",
       "cat_title": "GIFT SETS",
-      "cat_img": "perfume_15_1000420875.jpeg",
-      "created_at": null,
-      "updated_at": null
+      "handle": "giftsets",
+      "cat_img": "perfume_15_1000420875.jpeg"
     }
   ],
   "sub-categories": [
@@ -34,46 +30,36 @@
       "subcat_id": "1",
       "cat_id": "1",
       "subcat_title": "Oriental & Oud",
-      "subcat_img": "perfume_1_1000420861.jpeg",
       "handle": "oriental-oud",
-      "SEOdescription": "Exquisite Arabian Oud & Oriental luxury perfumes",
-      "SEOtitle": "Oriental & Oud Fragrances"
+      "subcat_img": "perfume_1_1000420861.jpeg"
     },
     {
       "subcat_id": "2",
       "cat_id": "1",
       "subcat_title": "Luxury Collection",
-      "subcat_img": "perfume_2_1000420862.jpeg",
       "handle": "luxury-collection",
-      "SEOdescription": "High-concentration luxury EDP collection",
-      "SEOtitle": "Luxury Fragrance Collection"
+      "subcat_img": "perfume_2_1000420862.jpeg"
     },
     {
       "subcat_id": "3",
       "cat_id": "1",
       "subcat_title": "Fresh & Citrus",
-      "subcat_img": "perfume_5_1000420865.jpeg",
       "handle": "fresh-citrus",
-      "SEOdescription": "Invigorating summer fresh and aquatic scents",
-      "SEOtitle": "Fresh & Citrus Perfumes"
+      "subcat_img": "perfume_5_1000420865.jpeg"
     },
     {
       "subcat_id": "4",
       "cat_id": "1",
       "subcat_title": "Floral & Musk",
-      "subcat_img": "perfume_3_1000420863.jpeg",
       "handle": "floral-musk",
-      "SEOdescription": "Intoxicating roses and cashmere white musk",
-      "SEOtitle": "Floral & Musk Fragrances"
+      "subcat_img": "perfume_3_1000420863.jpeg"
     },
     {
       "subcat_id": "5",
       "cat_id": "1",
       "subcat_title": "Woody & Amber",
-      "subcat_img": "perfume_4_1000420864.jpeg",
       "handle": "woody-amber",
-      "SEOdescription": "Warm spiced sandalwood, cedar and amber notes",
-      "SEOtitle": "Woody & Amber Perfumes"
+      "subcat_img": "perfume_4_1000420864.jpeg"
     }
   ],
   "cat-items": [
