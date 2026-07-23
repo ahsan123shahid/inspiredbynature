@@ -113,126 +113,24 @@ export interface ThemeSettings {
   };
 }
 
-export const defaultThemeSettings: ThemeSettings = {
-  announcement: {
-    text: "WELCOME TO INSPIREDBYNATURE — Free Shipping Nationwide",
-    bg_color: "#000000",
-    text_color: "#ffffff",
-    enabled: true,
-  },
-  logo_text: "INSPIREDBYNATURE",
-  logo_image: "inspiredbynature-logo.png",
-  logo_size: 70,
-  slides: [
-    {
-      id: "1",
-      title: "UNVEIL THE ESSENCE",
-      subtitle: "Discover the Art of Fragrance",
-      image: "banner1.jpg",
-      mobile_image: "",
-      btn_text: "EXPLORE NOW",
-      btn_link: "/shop/perfumes",
-      overlay_color: "#000000",
-      overlay_opacity: 0.3,
-      title_color: "#d4af37",
-      subtitle_color: "#ffffff",
-      content_alignment: "center",
-      btn_bg: "#d4af37",
-      btn_text_color: "#000000",
-      slide_duration: 5000,
-    },
-    {
-      id: "2",
-      title: "INSPIREDBYNATURE",
-      subtitle: "EXPERIENCE CTRINE, KAWKAB AND SCENTIQUE WHITE",
-      image: "banner.jpg",
-      mobile_image: "",
-      btn_text: "SHOP COLLECTION",
-      btn_link: "/shop/perfumes",
-      overlay_color: "#000000",
-      overlay_opacity: 0.3,
-      title_color: "#d4af37",
-      subtitle_color: "#ffffff",
-      content_alignment: "center",
-      btn_bg: "#d4af37",
-      btn_text_color: "#000000",
-      slide_duration: 5000,
-    },
-  ],
-  categories_section: {
-    enabled: true,
-    title: "Collections",
-  },
-  featured_collections: {
-    enabled: true,
-    title: "Featured collection",
-    tabs: [
-      { label: "PERFUMES", category: "perfumes" },
-    ],
-  },
-  trending_products: {
-    enabled: true,
-    title: "Top Trending Products",
-    limit: 5,
-  },
-  whatsapp: {
-    phone: "+923173179230",
-    enabled: true,
-    message: "Hi, I would like to make an inquiry.",
-    position: "bottom-right",
-  },
-  installments: {
-    enabled: true,
-    provider: "baadmay",
-    count: 3,
-  },
-  promotional_section: {
-    enabled: true,
-    left_image: "collection_bakhoor.jpg",
-    left_subtitle: "Exquisite Oud",
-    left_title: "Bakhoor Collection",
-    left_btn_text: "Discover Now",
-    left_btn_link: "/shop/bakhoor",
-    right_image: "collection_perfumes.jpg",
-    right_subtitle: "Signature Fragrance",
-    right_title: "Luxury Perfume",
-    right_btn_text: "Explore Collection",
-    right_btn_link: "/shop/perfumes",
-  },
-  instagram_gallery: {
-    enabled: false,
-    title: "Instagram lookbook gallery",
-    hashtag: "#inspiredbynature",
-    items: [],
-  },
-  trust_bar: {
-    enabled: true,
-    items: [
-      { icon: "truck", title: "Free Shipping", subtitle: "Nationwide delivery on all orders" },
-      { icon: "arrow-path", title: "Easy Exchange", subtitle: "Hassle-free 7-day exchanges" },
-      { icon: "sparkles", title: "100% Original", subtitle: "Authentic luxury scents" },
-      { icon: "lock", title: "Secure Payments", subtitle: "COD & encrypted SSL payments" },
-    ],
-  },
-  newsletter: {
-    enabled: true,
-    title: "Subscribe to Our Newsletter",
-    subtitle: "Get updates on new releases, special offers, and styling tips.",
-    button_text: "Subscribe",
-  },
-  footer: {
-    facebook_url: "https://facebook.com",
-    instagram_url: "https://instagram.com/inspiredbynature",
-    tiktok_url: "https://tiktok.com",
-    pinterest_url: "https://pinterest.com",
-    youtube_url: "https://youtube.com",
-    phone: "0301 5158089",
-    email: "info@gemininano.com",
-  },
-};
+import localDb from "../data/db.json";
+
+export const originalThemeSettings: ThemeSettings = (() => {
+  try {
+    const raw = localDb.stores?.[0]?.theme_settings;
+    if (raw) {
+      return typeof raw === "string" ? JSON.parse(raw) : raw;
+    }
+  } catch (e) {
+    console.error("Failed to parse theme_settings from db.json", e);
+  }
+  return {} as ThemeSettings;
+})();
+
+export const defaultThemeSettings = originalThemeSettings;
 
 const HomeLayout = () => {
-  const [settings, setSettings] = useState<ThemeSettings | null>(null);
+  const [settings, setSettings] = useState<ThemeSettings | null>(originalThemeSettings);
   const location = useLocation();
   const [flyingItems, setFlyingItems] = useState<Array<{ id: number; image: string; startX: number; startY: number }>>([]);
 
