@@ -5,7 +5,6 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const dbPath = path.join(__dirname, "..", "db.json");
 let db = null;
 
 function loadDb() {
@@ -13,6 +12,7 @@ function loadDb() {
     try {
       const cwd = process.cwd();
       const candidates = [
+        "/tmp/db.json",
         path.join(cwd, "db.json"),
         path.join(cwd, "src", "data", "db.json"),
         path.join(__dirname, "..", "db.json"),
@@ -31,6 +31,26 @@ function loadDb() {
   return db || { products: [], categories: [], "sub-categories": [] };
 }
 
+function saveDb(data) {
+  try {
+    const cwd = process.cwd();
+    const targets = [
+      "/tmp/db.json",
+      path.join(cwd, "db.json"),
+      path.join(cwd, "src", "data", "db.json")
+    ];
+    for (const target of targets) {
+      try {
+        fs.writeFileSync(target, JSON.stringify(data, null, 2), "utf-8");
+      } catch {
+        // ignore read-only file system errors on Vercel lambda
+      }
+    }
+  } catch (err) {
+    console.error("Failed to save db in Vercel API:", err);
+  }
+}
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
@@ -42,7 +62,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const db = loadDb();
+  const database = loadDb();
   let segments = [];
   if (Array.isArray(req.query.path)) {
     segments = req.query.path;
@@ -56,36 +76,86 @@ export default async function handler(req, res) {
   const resource = segments[0];
   const id = segments[1];
 
+  let body = req.body;
+  if (typeof body === "string") {
+    try {
+      body = JSON.parse(body);
+    } catch {
+      body = {};
+    }
+  }
+  body = body || {};
+
   try {
-    if (req.method !== "GET") {
-      if (resource === "auth" && (id === "login" || segments[1] === "login")) {
-        const body = req.body || {};
-        const users = db.users || [];
-        const found = users.find((u) => u.email === body.email);
-        const userObj = found || {
-          id: 5,
-          name: "Admin User",
-          email: body.email || "admin@admin.com",
-          role: "admin"
-        };
-        res.status(200).json({
-          ...userObj,
-          role: userObj.role || "admin",
-          access_token: "admin_token_12345"
-        });
-        return;
+    // Handle auth login
+    if (resource === "auth" && (id === "login" || segments[1] === "login")) {
+      const users = database.users || [];
+      const found = users.find((u) => u.email === body.email);
+      const userObj = found || {
+        id: 5,
+        name: "Admin User",
+        email: body.email || "admin@admin.com",
+        role: "admin"
+      };
+      res.status(200).json({
+        ...userObj,
+        role: userObj.role || "admin",
+        access_token: "admin_token_12345"
+      });
+      return;
+    }
+
+    // Handle POST (Create)
+    if (req.method === "POST" && resource) {
+      if (!Array.isArray(database[resource])) {
+        database[resource] = [];
       }
-      const body = req.method === "DELETE" ? {} : req.body || {};
+      const newId = body.id || body.cat_id || body.subcat_id || String(Date.now());
+      const newItem = { id: newId, ...body };
+      database[resource].unshift(newItem);
+      saveDb(database);
+      res.status(201).json(newItem);
+      return;
+    }
+
+    // Handle PUT / PATCH (Update)
+    if ((req.method === "PUT" || req.method === "PATCH") && resource) {
+      const arr = database[resource];
+      if (Array.isArray(arr)) {
+        const idx = arr.findIndex(
+          (x) => String(x.id) === String(id) || String(x.cat_id) === String(id) || String(x.subcat_id) === String(id)
+        );
+        if (idx !== -1) {
+          arr[idx] = { ...arr[idx], ...body };
+          saveDb(database);
+          res.status(200).json(arr[idx]);
+          return;
+        }
+      }
       res.status(200).json(body);
       return;
     }
 
-    if (!resource) {
-      res.status(200).json(db);
+    // Handle DELETE (Remove)
+    if (req.method === "DELETE" && resource) {
+      const arr = database[resource];
+      if (Array.isArray(arr) && id) {
+        database[resource] = arr.filter(
+          (x) => String(x.id) !== String(id) && String(x.cat_id) !== String(id) && String(x.subcat_id) !== String(id)
+        );
+        saveDb(database);
+      }
+      res.status(200).json({ success: true });
       return;
     }
 
-    let collection = db[resource];
+    // Handle GET (Read)
+    if (!resource) {
+      res.status(200).json(database);
+      return;
+    }
+
+    let collection = database[resource];
     if (!Array.isArray(collection)) {
       collection = collection != null ? collection : [];
     }
@@ -113,18 +183,10 @@ export default async function handler(req, res) {
         queryKeys.every((k) => String(item[k]) === String(params[k]))
       );
     }
-    if (params._sort && Array.isArray(result)) {
-      const dir = params._order === "desc" ? -1 : 1;
-      result = [...result].sort((a, b) =>
-        a[params._sort] > b[params._sort] ? dir : -dir
-      );
-    }
-    if (params._limit && Array.isArray(result)) {
-      result = result.slice(0, Number(params._limit));
-    }
 
     res.status(200).json(result);
-  } catch (e) {
-    res.status(500).json({ error: "Server error" });
+  } catch (err) {
+    console.error("API error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 }

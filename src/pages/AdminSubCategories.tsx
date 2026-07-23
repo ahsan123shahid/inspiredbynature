@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { HiPencilSquare, HiTrash, HiPlus, HiXMark, HiOutlinePhoto, HiOutlineMagnifyingGlass, HiArrowUpTray, HiCheck } from "react-icons/hi2";
 import ConfirmModal from "../components/ConfirmModal";
+import localDb from "../data/db.json";
 
 interface SubCategory {
   subcat_id: string;
@@ -119,10 +120,13 @@ const AdminSubCategories = () => {
         customFetch.get("/sub-categories"),
         customFetch.get("/categories"),
       ]);
-      setItems(normalizeSubcategories(subRes.data));
-      setCategories(normalizeCategories(catRes.data));
+      const subList = Array.isArray(subRes.data) && subRes.data.length > 0 ? subRes.data : (localDb["sub-categories"] as any[]);
+      const catList = Array.isArray(catRes.data) && catRes.data.length > 0 ? catRes.data : (localDb.categories as any[]);
+      setItems(normalizeSubcategories(subList));
+      setCategories(normalizeCategories(catList));
     } catch {
-      setError("Failed to load subcategories. Make sure the backend is running.");
+      setItems(normalizeSubcategories(localDb["sub-categories"] as any[]));
+      setCategories(normalizeCategories(localDb.categories as any[]));
     } finally {
       setLoading(false);
     }
