@@ -343,40 +343,31 @@ const HomeLayout = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-
         const res = await customFetch.get("/stores");
-        if (res.data && res.data.length > 0) {
-          const store = res.data[0];
-          if (store.theme_settings) {
-            const parsed = JSON.parse(store.theme_settings);
-            setSettings({
-              ...defaultThemeSettings,
-              ...parsed,
-              announcement: { ...defaultThemeSettings.announcement, ...(parsed.announcement || {}) },
-              whatsapp: { ...defaultThemeSettings.whatsapp, ...(parsed.whatsapp || {}) },
-              installments: { ...defaultThemeSettings.installments, ...(parsed.installments || {}) },
-              featured_collections: { ...defaultThemeSettings.featured_collections, ...(parsed.featured_collections || {}) },
-              trending_products: { ...defaultThemeSettings.trending_products, ...(parsed.trending_products || {}) },
-              instagram_gallery: { ...defaultThemeSettings.instagram_gallery, ...(parsed.instagram_gallery || {}) },
-              trust_bar: { ...defaultThemeSettings.trust_bar, ...(parsed.trust_bar || {}) },
-              newsletter: { ...defaultThemeSettings.newsletter, ...(parsed.newsletter || {}) },
-              footer: { ...defaultThemeSettings.footer, ...(parsed.footer || {}) },
-            });
-            return;
-          }
-        }
-        // Fallback to local storage if store settings are not in the database response
-        const fallback = localStorage.getItem("inspiredbynature_theme_settings_fallback");
-        if (fallback) {
-          setSettings(JSON.parse(fallback));
+        const storeData = Array.isArray(res.data) ? res.data[0] : res.data;
+        if (storeData && storeData.theme_settings) {
+          const parsed = typeof storeData.theme_settings === "string" ? JSON.parse(storeData.theme_settings) : storeData.theme_settings;
+          setSettings({
+            ...defaultThemeSettings,
+            ...parsed,
+            announcement: { ...defaultThemeSettings.announcement, ...(parsed.announcement || {}) },
+            whatsapp: { ...defaultThemeSettings.whatsapp, ...(parsed.whatsapp || {}) },
+            installments: { ...defaultThemeSettings.installments, ...(parsed.installments || {}) },
+            featured_collections: { ...defaultThemeSettings.featured_collections, ...(parsed.featured_collections || {}) },
+            trending_products: { ...defaultThemeSettings.trending_products, ...(parsed.trending_products || {}) },
+            instagram_gallery: { ...defaultThemeSettings.instagram_gallery, ...(parsed.instagram_gallery || {}) },
+            trust_bar: { ...defaultThemeSettings.trust_bar, ...(parsed.trust_bar || {}) },
+            newsletter: { ...defaultThemeSettings.newsletter, ...(parsed.newsletter || {}) },
+            footer: { ...defaultThemeSettings.footer, ...(parsed.footer || {}) },
+          });
+          return;
         }
       } catch (e) {
         console.error("Failed to load store settings on frontend layout", e);
-        const fallback = localStorage.getItem("inspiredbynature_theme_settings_fallback");
-        if (fallback) {
-          setSettings(JSON.parse(fallback));
-        }
       }
+
+      // Guaranteed fallback so layout never hangs on loading spinner
+      setSettings(defaultThemeSettings);
     };
     fetchSettings();
   }, []);
