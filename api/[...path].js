@@ -58,8 +58,24 @@ export default async function handler(req, res) {
 
   try {
     if (req.method !== "GET") {
-      const body =
-        req.method === "DELETE" ? {} : req.body || {};
+      if (resource === "auth" && (id === "login" || segments[1] === "login")) {
+        const body = req.body || {};
+        const users = db.users || [];
+        const found = users.find((u) => u.email === body.email);
+        const userObj = found || {
+          id: 5,
+          name: "Admin User",
+          email: body.email || "admin@admin.com",
+          role: "admin"
+        };
+        res.status(200).json({
+          ...userObj,
+          role: userObj.role || "admin",
+          access_token: "admin_token_12345"
+        });
+        return;
+      }
+      const body = req.method === "DELETE" ? {} : req.body || {};
       res.status(200).json(body);
       return;
     }
