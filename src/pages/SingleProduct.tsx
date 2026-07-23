@@ -123,10 +123,14 @@ const SingleProduct = () => {
     const gallery = [singleProduct.image];
     const relImg = (singleProduct.additional_images || (singleProduct as any).additionalImages) as any;
     if (relImg) {
-      if (relImg.pro_img2) gallery.push(relImg.pro_img2);
-      if (relImg.pro_img3) gallery.push(relImg.pro_img3);
-      if (relImg.pro_img4) gallery.push(relImg.pro_img4);
-      if (relImg.pro_img5) gallery.push(relImg.pro_img5);
+      if (Array.isArray(relImg)) {
+        gallery.push(...relImg);
+      } else if (typeof relImg === "object") {
+        if (relImg.pro_img2) gallery.push(relImg.pro_img2);
+        if (relImg.pro_img3) gallery.push(relImg.pro_img3);
+        if (relImg.pro_img4) gallery.push(relImg.pro_img4);
+        if (relImg.pro_img5) gallery.push(relImg.pro_img5);
+      }
     }
     if (gallery.filter(Boolean).length > 1) {
       setAdditionalImages(gallery.filter(Boolean));
@@ -444,7 +448,9 @@ const SingleProduct = () => {
 
           <div className="border-t border-hairline pt-6 space-y-4">
             <Dropdown dropdownTitle="Description">
-              {singleProduct?.description || "No description available."}
+              <div className="whitespace-pre-line text-body-md text-ink leading-relaxed">
+                {singleProduct?.description || "No description available."}
+              </div>
             </Dropdown>
             <Dropdown dropdownTitle="Delivery &amp; Return Details">
               Returns accepted within 14 days of delivery. Free shipping nationwide. International orders deliver within 10-15 business days.

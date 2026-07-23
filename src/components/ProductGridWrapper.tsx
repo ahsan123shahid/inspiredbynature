@@ -78,9 +78,10 @@ const ProductGridWrapper = ({
         processed = processed.filter((product: any) => {
           const filterSlug = category.toLowerCase().replace(/\s+/g, "-");
 
-          // Match category slug (old slug compatibility)
+          // Match category & collection slug
           const catSlug = product.category?.toLowerCase().replace(/\s+/g, "-");
-          if (catSlug === filterSlug) return true;
+          const colSlug = product.collection?.toLowerCase().replace(/\s+/g, "-");
+          if (catSlug === filterSlug || colSlug === filterSlug) return true;
 
           // Match category relationship
           const catRel = product.category_relation || product.categoryRelation;
