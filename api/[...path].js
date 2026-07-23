@@ -10,10 +10,25 @@ let db = null;
 
 function loadDb() {
   if (!db) {
-    const raw = fs.readFileSync(dbPath, "utf-8");
-    db = JSON.parse(raw);
+    try {
+      const cwd = process.cwd();
+      const candidates = [
+        path.join(cwd, "db.json"),
+        path.join(cwd, "src", "data", "db.json"),
+        path.join(__dirname, "..", "db.json"),
+      ];
+      for (const p of candidates) {
+        if (fs.existsSync(p)) {
+          const raw = fs.readFileSync(p, "utf-8");
+          db = JSON.parse(raw);
+          break;
+        }
+      }
+    } catch (e) {
+      console.error("Error reading db.json in Vercel API:", e);
+    }
   }
-  return db;
+  return db || { products: [], categories: [], "sub-categories": [] };
 }
 
 export default async function handler(req, res) {

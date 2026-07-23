@@ -7,6 +7,7 @@ import {
 } from "react-icons/hi2";
 import { Link, useNavigate } from "react-router-dom";
 import ConfirmModal from "../components/ConfirmModal";
+import localDb from "../data/db.json";
 
 const ROWS_PER_PAGE = 10;
 
@@ -37,9 +38,14 @@ const AdminProducts = () => {
     setLoading(true);
     try {
       const res = await customFetch.get("/products");
-      setProducts(res.data);
-    } catch (e) { console.error(e); }
-    finally { setLoading(false); }
+      let data = Array.isArray(res.data) && res.data.length > 0 ? res.data : (localDb.products as any[]);
+      setProducts(data);
+    } catch (e) {
+      console.error(e);
+      setProducts((localDb.products as any[]) || []);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
