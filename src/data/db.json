@@ -808,39 +808,33 @@
   "nav-items": [
     {
       "id": "1",
-      "label": "New Arrivals",
-      "slug": "new-arrivals",
+      "label": "PERFUMES",
+      "slug": "perfumes",
       "sort_order": 1
     },
     {
       "id": "2",
-      "label": "Women",
-      "slug": "women",
+      "label": "ORIENTAL & OUD",
+      "slug": "oriental-oud",
       "sort_order": 2
     },
     {
       "id": "3",
-      "label": "Men",
-      "slug": "men",
+      "label": "OILS (ATTAR)",
+      "slug": "oils",
       "sort_order": 3
     },
     {
       "id": "4",
-      "label": "Unisex",
-      "slug": "unisex",
+      "label": "BAKHOOR",
+      "slug": "bakhoor",
       "sort_order": 4
     },
     {
       "id": "5",
-      "label": "Gift Sets",
+      "label": "GIFT SETS",
       "slug": "gift-sets",
       "sort_order": 5
-    },
-    {
-      "id": "6",
-      "label": "Special Prices",
-      "slug": "special-prices",
-      "sort_order": 6
     }
   ]
 }

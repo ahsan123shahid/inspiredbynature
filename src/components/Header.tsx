@@ -11,12 +11,10 @@ import { ThemeSettings } from "../pages/HomeLayout";
 const defaultNavItems = [
   { label: "HOME", path: "/" },
   { label: "PERFUMES", path: "/shop/perfumes" },
-  { label: "OILS", path: "/shop/oils" },
-  { label: "BODY GEL AND HAIR MIST", path: "/shop/body-gel-and-hair-mist" },
+  { label: "ORIENTAL & OUD", path: "/shop/oriental-oud" },
+  { label: "OILS (ATTAR)", path: "/shop/oils" },
+  { label: "BAKHOOR", path: "/shop/bakhoor" },
   { label: "GIFT SETS", path: "/shop/gift-sets" },
-  { label: "BAKHOOR AND BURNERS", path: "/shop/bakhoor-and-burners" },
-  { label: "ROOM FRESHNERS", path: "/shop/room-freshners" },
-  { label: "TAHAMI PERFUMES", path: "/shop/tahami-perfumes" },
   { label: "CONTACT US", path: "/contact" },
 ];
 
